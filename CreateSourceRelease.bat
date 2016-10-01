@@ -1,0 +1,1 @@
+git archive master --format=zip --prefix=TS3QueryLib.Net.Core/ > TS3QueryLib.Net.Core.zip
