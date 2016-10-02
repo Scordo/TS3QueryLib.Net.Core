@@ -3,6 +3,7 @@ using System.Threading;
 using TS3QueryLib.Net.Core;
 using TS3QueryLib.Net.Core.Common;
 using TS3QueryLib.Net.Core.Common.Commands;
+using TS3QueryLib.Net.Core.Common.Entities;
 using TS3QueryLib.Net.Core.Server.Commands;
 using TS3QueryLib.Net.Core.Server.Entitities;
 using TS3QueryLib.Net.Core.Server.Notification;
@@ -46,7 +47,7 @@ namespace TS3QueryLib.Net.Core.TestApp
             Console.WriteLine("Register notify [TokenUsed]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.TokenUsed).Execute(client).IsErroneous);
             
 
-            //Console.WriteLine(new ServerInfoCommand().Execute(client).GetDumpString());
+            Console.WriteLine(new ChannelDeleteCommand(5, true).Execute(client).GetDumpString());
             
 
             Console.WriteLine("Type a command or press [ENTER] to quit");
