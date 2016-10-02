@@ -17,7 +17,7 @@ namespace TS3QueryLib.Net.Core.Server.Entitities
 
         #region Public Methods
 
-        public MessageEntry ApplyFrom(CommandParameterGroup currentParameterGroup, CommandParameterGroup firstParameterGroup)
+        MessageEntry IEntity<MessageEntry>.ApplyFrom(CommandParameterGroup currentParameterGroup, CommandParameterGroup firstParameterGroup)
         { 
             if (currentParameterGroup == null)
                 throw new ArgumentNullException(nameof(currentParameterGroup));

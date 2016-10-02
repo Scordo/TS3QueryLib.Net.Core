@@ -14,7 +14,7 @@ namespace TS3QueryLib.Net.Core.Server.Entitities
         
         #region Public Methods
 
-        public ChannelFindEntry ApplyFrom(CommandParameterGroup currentParameterGroup, CommandParameterGroup firstParameterGroup)
+        ChannelFindEntry IEntity<ChannelFindEntry>.ApplyFrom(CommandParameterGroup currentParameterGroup, CommandParameterGroup firstParameterGroup)
         {
             if (currentParameterGroup == null)
                 throw new ArgumentNullException(nameof(currentParameterGroup));

@@ -18,7 +18,7 @@ namespace TS3QueryLib.Net.Core.Server.Entitities
 
         #region Public Methods
 
-        public ComplainListEntry ApplyFrom(CommandParameterGroup currentParameterGroup, CommandParameterGroup firstParameterGroup)
+        ComplainListEntry IEntity<ComplainListEntry>.ApplyFrom(CommandParameterGroup currentParameterGroup, CommandParameterGroup firstParameterGroup)
         {
             if (currentParameterGroup == null)
                 throw new ArgumentNullException(nameof(currentParameterGroup));

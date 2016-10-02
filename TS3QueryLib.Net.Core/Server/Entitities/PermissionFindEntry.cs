@@ -16,7 +16,7 @@ namespace TS3QueryLib.Net.Core.Server.Entitities
 
         #region Public Methods
 
-        public PermissionFindEntry ApplyFrom(CommandParameterGroup currentParameterGroup, CommandParameterGroup firstParameterGroup)
+        PermissionFindEntry IEntity<PermissionFindEntry>.ApplyFrom(CommandParameterGroup currentParameterGroup, CommandParameterGroup firstParameterGroup)
         {
             if (currentParameterGroup == null)
                 throw new ArgumentNullException(nameof(currentParameterGroup));

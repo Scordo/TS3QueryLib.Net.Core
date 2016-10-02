@@ -17,7 +17,7 @@ namespace TS3QueryLib.Net.Core.Server.Entitities
 
         #region Public Methods
 
-        public FileTransferFileEntry ApplyFrom(CommandParameterGroup currentParameterGroup, CommandParameterGroup firstParameterGroup)
+        FileTransferFileEntry IEntity<FileTransferFileEntry>.ApplyFrom(CommandParameterGroup currentParameterGroup, CommandParameterGroup firstParameterGroup)
         {
             if (currentParameterGroup == null)
                 throw new ArgumentNullException(nameof(currentParameterGroup));
