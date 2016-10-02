@@ -8,7 +8,7 @@ This library is work in progress.
 **List of Command-Implementation-State** (&#x2714; implemented - &#x2716; not implemented yet):
 
 
-* &#x2716; help
+* &#x2714; help
 * &#x2714; quit
 * &#x2714; login
 * &#x2714; logout
