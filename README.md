@@ -133,6 +133,6 @@ This library is work in progress. A lot of commands are missing, but the notific
 * &#x2714; ftdeletefile
 * &#x2714; ftcreatedir
 * &#x2714; ftrenamefile
-* &#x2716; customsearch
-* &#x2716; custominfo
+* &#x2714; customsearch
+* &#x2714; custominfo
 * &#x2716; whoami
