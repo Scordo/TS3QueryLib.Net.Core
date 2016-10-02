@@ -87,7 +87,7 @@ This library is work in progress. A lot of commands are missing, but the notific
 * &#x2714; clientgetids
 * &#x2714; clientgetdbidfromuid
 * &#x2714; clientgetnamefromuid
-* &#x2716; clientgetuidfromclid
+* &#x2714; clientgetuidfromclid
 * &#x2714; clientgetnamefromdbid
 * &#x2714; clientsetserverquerylogin
 * &#x2714; clientupdate
