@@ -48,10 +48,10 @@ This library is work in progress. A lot of commands are missing, but the notific
 * &#x2714; servernotifyregister
 * &#x2714; servernotifyunregister
 * &#x2714; sendtextmessage
-* &#x2716; logview
+* &#x2714; logview
 * &#x2714; logadd
 * &#x2714; gm
-* &#x2716; channellist
+* &#x2714; channellist
 * &#x2716; channelinfo
 * &#x2716; channelfind
 * &#x2714; channelmove
