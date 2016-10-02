@@ -41,8 +41,8 @@ This library is work in progress. A lot of commands are missing, but the notific
 * &#x2714; servergroupdelclient
 * &#x2714; servergroupclientlist
 * &#x2714; servergroupsbyclientid
-* &#x2716; servergroupautoaddperm
-* &#x2716; servergroupautodelperm
+* &#x2714; servergroupautoaddperm
+* &#x2714; servergroupautodelperm
 * &#x2714; serversnapshotcreate
 * &#x2714; serversnapshotdeploy
 * &#x2714; servernotifyregister
