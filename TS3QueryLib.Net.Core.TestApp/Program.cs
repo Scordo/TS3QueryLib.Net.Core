@@ -75,69 +75,69 @@ namespace TS3QueryLib.Net.Core.TestApp
             Console.ResetColor();
         }
 
-        private static void Client_BanDetected(object sender, EventArgs<TS3QueryLib.Net.Core.Common.Responses.ICommandResponse> e)
+        private static void Client_BanDetected(object sender, EventArgs<Common.Responses.ICommandResponse> e)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("!!! BAN DETECTED !!!");
             Console.ResetColor();
         }
 
-        private static void TokenUsed_Triggered(object sender, TS3QueryLib.Net.Core.Server.Notification.EventArgs.TokenUsedEventArgs e)
+        private static void TokenUsed_Triggered(object sender, Server.Notification.EventArgs.TokenUsedEventArgs e)
         {
             Console.WriteLine($"Token-Usage: ClientId:{e.ClientId}, Token={e.TokenText}");
         }
 
-        private static void ClientMoved_JoiningChannelForced(object sender, TS3QueryLib.Net.Core.Server.Notification.EventArgs.ClientMovedByClientEventArgs e)
+        private static void ClientMoved_JoiningChannelForced(object sender, Server.Notification.EventArgs.ClientMovedByClientEventArgs e)
         {
             Console.WriteLine($"Move: Type=Forced, ClientId={e.ClientId}, TargetChannelId={e.TargetChannelId}, Invoker={e.InvokerNickname}");
         }
 
-        private static void ClientMoved_CreatingTemporaryChannel(object sender, TS3QueryLib.Net.Core.Server.Notification.EventArgs.ClientMovedEventArgs e)
+        private static void ClientMoved_CreatingTemporaryChannel(object sender, Server.Notification.EventArgs.ClientMovedEventArgs e)
         {
             Console.WriteLine($"Move: Type=TempChannel, ClientId={e.ClientId}, TargetChannelId={e.TargetChannelId}");
         }
 
-        private static void ClientMoved_JoiningChannel(object sender, TS3QueryLib.Net.Core.Server.Notification.EventArgs.ClientMovedEventArgs e)
+        private static void ClientMoved_JoiningChannel(object sender, Server.Notification.EventArgs.ClientMovedEventArgs e)
         {
             Console.WriteLine($"Move: Type=Self, ClientId={e.ClientId}, TargetChannelId={e.TargetChannelId}");
         }
 
-        private static void ClientMessage_ReceivedFromServer(object sender, TS3QueryLib.Net.Core.Server.Notification.EventArgs.MessageReceivedEventArgs e)
+        private static void ClientMessage_ReceivedFromServer(object sender, Server.Notification.EventArgs.MessageReceivedEventArgs e)
         {
             Console.WriteLine($"[Server] Message from {e.InvokerNickname}: {e.Message}");
         }
 
-        private static void ClientMessage_ReceivedFromChannel(object sender, TS3QueryLib.Net.Core.Server.Notification.EventArgs.MessageReceivedEventArgs e)
+        private static void ClientMessage_ReceivedFromChannel(object sender, Server.Notification.EventArgs.MessageReceivedEventArgs e)
         {
             Console.WriteLine($"[Channel] Message from {e.InvokerNickname}: {e.Message}");
         }
 
-        private static void ClientMessage_ReceivedFromClient(object sender, TS3QueryLib.Net.Core.Server.Notification.EventArgs.MessageReceivedEventArgs e)
+        private static void ClientMessage_ReceivedFromClient(object sender, Server.Notification.EventArgs.MessageReceivedEventArgs e)
         {
             Console.WriteLine($"[Client] Message from {e.InvokerNickname}: {e.Message}");
         }
 
-        private static void ClientLeft_Banned(object sender, TS3QueryLib.Net.Core.Server.Notification.EventArgs.ClientBanEventArgs e)
+        private static void ClientLeft_Banned(object sender, Server.Notification.EventArgs.ClientBanEventArgs e)
         {
             Console.WriteLine($"Banned: {e.VictimClientId}");
         }
 
-        private static void ClientLeft_ConnectionLost(object sender, TS3QueryLib.Net.Core.Server.Notification.EventArgs.ClientConnectionLostEventArgs e)
+        private static void ClientLeft_ConnectionLost(object sender, Server.Notification.EventArgs.ClientConnectionLostEventArgs e)
         {
             Console.WriteLine($"Connection lost: {e.ClientId}");
         }
 
-        private static void ClientLeft_Disconnected(object sender, TS3QueryLib.Net.Core.Server.Notification.EventArgs.ClientDisconnectEventArgs e)
+        private static void ClientLeft_Disconnected(object sender, Server.Notification.EventArgs.ClientDisconnectEventArgs e)
         {
             Console.WriteLine($"Disconnected: {e.ClientId}");
         }
 
-        private static void ClientLeft_Kicked(object sender, TS3QueryLib.Net.Core.Server.Notification.EventArgs.ClientKickEventArgs e)
+        private static void ClientLeft_Kicked(object sender, Server.Notification.EventArgs.ClientKickEventArgs e)
         {
             Console.WriteLine($"Kicked: {e.VictimClientId}");
         }
 
-        private static void ClientJoined_Triggered(object sender, TS3QueryLib.Net.Core.Server.Notification.EventArgs.ClientJoinedEventArgs e)
+        private static void ClientJoined_Triggered(object sender, Server.Notification.EventArgs.ClientJoinedEventArgs e)
         {
             Console.WriteLine($"Joined: {e.Nickname}");
         }
