@@ -1,0 +1,12 @@
+﻿using TS3QueryLib.Net.Core.Common.Commands;
+using TS3QueryLib.Net.Core.Server.Entitities;
+
+namespace TS3QueryLib.Net.Core.Server.Commands
+{
+    public class ServerGroupListCommand : ExecutableEntityListCommand<ServerGroup>
+    {
+        public ServerGroupListCommand() : base("ServerGroupList")
+        {
+        }
+    }
+}
