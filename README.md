@@ -86,9 +86,9 @@ This library is work in progress. A lot of commands are missing, but the notific
 * &#x2714; clientdbdelete
 * &#x2714; clientgetids
 * &#x2714; clientgetdbidfromuid
-* &#x2716; clientgetnamefromuid
+* &#x2714; clientgetnamefromuid
 * &#x2716; clientgetuidfromclid
-* &#x2716; clientgetnamefromdbid
+* &#x2714; clientgetnamefromdbid
 * &#x2714; clientsetserverquerylogin
 * &#x2714; clientupdate
 * &#x2714; clientmove
