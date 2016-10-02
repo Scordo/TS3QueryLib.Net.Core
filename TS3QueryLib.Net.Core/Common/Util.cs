@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -57,6 +58,15 @@ namespace TS3QueryLib.Net.Core.Common
         {
             return string.IsNullOrEmpty(value) ? value : Regex.Replace(value, DecodePattern, ReplaceEncodedValue, RegexOptions.Singleline);
         }
+
+        public static DateTime TS3DateTimeFromSeconds(ulong seconds)
+        {
+            return new DateTime(1970, 1, 1).AddSeconds(seconds);
+        }
+
+        #endregion
+
+        #region Non Public Methods
 
         private static string ReplaceEncodedValue(Match match)
         {
