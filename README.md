@@ -60,12 +60,12 @@ This library is work in progress. A lot of commands are missing, but the notific
 * &#x2714; channeledit
 * &#x2716; channelgrouplist
 * &#x2716; channelgroupadd
-* &#x2716; channelgroupdel
+* &#x2714; channelgroupdel
 * &#x2716; channelgroupcopy
-* &#x2716; channelgrouprename
-* &#x2716; channelgroupaddperm
+* &#x2714; channelgrouprename
+* &#x2714; channelgroupaddperm
 * &#x2716; channelgrouppermlist
-* &#x2716; channelgroupdelperm
+* &#x2714; channelgroupdelperm
 * &#x2716; channelgroupclientlist
 * &#x2716; setclientchannelgroup
 * &#x2716; tokenadd
@@ -73,8 +73,8 @@ This library is work in progress. A lot of commands are missing, but the notific
 * &#x2716; tokenlist
 * &#x2716; tokenuse
 * &#x2716; channelpermlist
-* &#x2716; channeladdperm
-* &#x2716; channeldelperm
+* &#x2714; channeladdperm
+* &#x2714; channeldelperm
 * &#x2716; clientlist
 * &#x2716; clientinfo
 * &#x2716; clientfind
