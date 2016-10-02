@@ -68,10 +68,10 @@ This library is work in progress. A lot of commands are missing, but the notific
 * &#x2714; channelgroupdelperm
 * &#x2714; channelgroupclientlist
 * &#x2714; setclientchannelgroup
-* &#x2716; tokenadd
-* &#x2716; tokendelete
-* &#x2716; tokenlist
-* &#x2716; tokenuse
+* &#x2714; tokenadd
+* &#x2714; tokendelete
+* &#x2714; tokenlist
+* &#x2714; tokenuse
 * &#x2714; channelpermlist
 * &#x2714; channeladdperm
 * &#x2714; channeldelperm
