@@ -3,7 +3,7 @@ using TS3QueryLib.Net.Core.Common.Responses;
 
 namespace TS3QueryLib.Net.Core.Server.Responses
 {
-    public class HostInfoResponse : CommandResponse
+    public class HostInfoCommandResponse : CommandResponse
     {
         #region Properties
 

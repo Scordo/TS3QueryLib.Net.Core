@@ -2,7 +2,7 @@
 
 namespace TS3QueryLib.Net.Core.Server.Responses
 {
-    public class VersionResponse : CommandResponse
+    public class VersionCommandResponse : CommandResponse
     {
         public string Version { get; protected set; }
         public string Build { get; protected set; }

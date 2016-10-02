@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TS3QueryLib.Net.Core.Common.Responses;
 
 namespace TS3QueryLib.Net.Core.Server.Responses
 {
-    public class InstanceInfoResponse : CommandResponse
+    public class InstanceInfoCommandResponse : CommandResponse
     {
         #region Properties
 

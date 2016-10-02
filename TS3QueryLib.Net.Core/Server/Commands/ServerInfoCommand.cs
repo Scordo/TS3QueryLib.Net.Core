@@ -3,9 +3,9 @@ using TS3QueryLib.Net.Core.Server.Responses;
 
 namespace TS3QueryLib.Net.Core.Server.Commands
 {
-    public class InstanceInfoCommand : ExecutableCommand<InstanceInfoCommandResponse>
+    public class ServerInfoCommand : ExecutableCommand<ServerInfoCommandResponse>
     {
-        public InstanceInfoCommand() : base("InstanceInfo")
+        public ServerInfoCommand() : base("ServerInfo")
         {
         }
     }

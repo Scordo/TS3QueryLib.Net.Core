@@ -46,7 +46,7 @@ namespace TS3QueryLib.Net.Core.TestApp
             Console.WriteLine("Register notify [TokenUsed]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.TokenUsed).Execute(client).IsErroneous);
             
 
-            //Console.WriteLine(new ServerListCommand(true).Execute(client).GetDumpString());
+            //Console.WriteLine(new ServerInfoCommand().Execute(client).GetDumpString());
             
 
             Console.WriteLine("Type a command or press [ENTER] to quit");
