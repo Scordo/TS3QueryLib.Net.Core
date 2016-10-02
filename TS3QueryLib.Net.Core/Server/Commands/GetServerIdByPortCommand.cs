@@ -5,7 +5,7 @@ namespace TS3QueryLib.Net.Core.Server.Commands
 {
     public class GetServerIdByPortCommand : ExecutableCommand<SingleValueCommandResponse<uint?>>
     {
-        public GetServerIdByPortCommand(ushort virtualServerPort) : base(CommandName.ServerIdGetByPort)
+        public GetServerIdByPortCommand(ushort virtualServerPort) : base("ServerIdGetByPort")
         {
             AddParameter("virtualserver_port", virtualServerPort);
         }

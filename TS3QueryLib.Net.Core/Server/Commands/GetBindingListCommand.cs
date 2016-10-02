@@ -5,7 +5,7 @@ namespace TS3QueryLib.Net.Core.Server.Commands
 {
     public class GetBindingListCommand : ExecutableCommand<ValueListCommandResponse<string>>
     {
-        public GetBindingListCommand() : base(CommandName.BindingList)
+        public GetBindingListCommand() : base("BindingList")
         {
             
         }

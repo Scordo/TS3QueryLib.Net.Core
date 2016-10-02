@@ -4,7 +4,7 @@ namespace TS3QueryLib.Net.Core.Server.Commands
 {
     public class LoginCommand : ExecutableValuelessCommand
     {
-        public LoginCommand(string username, string password) : base(CommandName.Login)
+        public LoginCommand(string username, string password) : base("Login")
         {
             if (username.IsNullOrTrimmedEmpty())
                 throw new ArgumentException("username is null or trimmed empty", nameof(username));

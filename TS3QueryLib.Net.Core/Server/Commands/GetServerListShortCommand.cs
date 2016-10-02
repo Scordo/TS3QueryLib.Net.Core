@@ -6,7 +6,7 @@ namespace TS3QueryLib.Net.Core.Server.Commands
 {
     public class GetServerListShortCommand : ExecutableCommand<EntityListCommandResponse<ServerListItemBase>>
     {
-        public GetServerListShortCommand() : base(CommandName.ServerList)
+        public GetServerListShortCommand() : base("ServerList")
         {
             AddOption("short");
         }

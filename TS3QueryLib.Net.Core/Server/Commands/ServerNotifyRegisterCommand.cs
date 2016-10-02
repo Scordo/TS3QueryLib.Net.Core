@@ -8,7 +8,7 @@ namespace TS3QueryLib.Net.Core.Server.Commands
         {
         }
 
-        public ServerNotifyRegisterCommand(string eventSource, uint? channelId = null) : base(CommandName.ServerNotifyRegister)
+        public ServerNotifyRegisterCommand(string eventSource, uint? channelId = null) : base("ServerNotifyRegister")
         {
             AddParameter("event", eventSource?.ToLower());
 

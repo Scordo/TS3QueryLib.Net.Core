@@ -5,7 +5,7 @@ namespace TS3QueryLib.Net.Core.Server.Commands
 {
     public class VersionCommand : ExecutableCommand<VersionResponse>
     {
-        public VersionCommand() : base(CommandName.Version)
+        public VersionCommand() : base("Version")
         {
         }
     }
