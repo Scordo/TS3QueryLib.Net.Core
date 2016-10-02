@@ -103,7 +103,7 @@ This library is work in progress. A lot of commands are missing, but the notific
 * &#x2714; permissionlist
 * &#x2714; permidgetbyname
 * &#x2714; permoverview
-* &#x2716; permget
+* &#x2714; permget
 * &#x2714; permfind
 * &#x2714; permreset
 * &#x2714; privilegekeylist
@@ -113,7 +113,7 @@ This library is work in progress. A lot of commands are missing, but the notific
 * &#x2714; messagelist
 * &#x2714; messageadd
 * &#x2714; messagedel
-* &#x2716; messageget
+* &#x2714; messageget
 * &#x2714; messageupdateflag
 * &#x2714; complainlist
 * &#x2714; complainadd
@@ -124,8 +124,8 @@ This library is work in progress. A lot of commands are missing, but the notific
 * &#x2714; banadd
 * &#x2714; bandel
 * &#x2714; bandelall
-* &#x2716; ftinitupload
-* &#x2716; ftinitdownload
+* &#x2714; ftinitupload
+* &#x2714; ftinitdownload
 * &#x2714; ftlist
 * &#x2714; ftgetfilelist
 * &#x2714; ftgetfileinfo
@@ -135,4 +135,4 @@ This library is work in progress. A lot of commands are missing, but the notific
 * &#x2714; ftrenamefile
 * &#x2714; customsearch
 * &#x2714; custominfo
-* &#x2716; whoami
+* &#x2714; whoami
