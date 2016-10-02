@@ -92,11 +92,11 @@ This library is work in progress. A lot of commands are missing, but the notific
 * &#x2716; clientsetserverquerylogin
 * &#x2714; clientupdate
 * &#x2714; clientmove
-* &#x2716; clientkick
-* &#x2716; clientpoke
+* &#x2714; clientkick
+* &#x2714; clientpoke
 * &#x2716; clientpermlist
-* &#x2716; clientaddperm
-* &#x2716; clientdelperm
+* &#x2714; clientaddperm
+* &#x2714; clientdelperm
 * &#x2716; channelclientpermlist
 * &#x2716; channelclientaddperm
 * &#x2716; channelclientdelperm
