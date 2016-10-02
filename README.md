@@ -28,7 +28,7 @@ This library is work in progress. A lot of commands are missing, but the notific
 * &#x2714; servertemppasswordadd
 * &#x2714; servertemppassworddel
 * &#x2714; servertemppasswordlist
-* &#x2716; serveredit
+* &#x2714; serveredit
 * &#x2714; servergrouplist
 * &#x2714; servergroupadd
 * &#x2714; servergroupdel
