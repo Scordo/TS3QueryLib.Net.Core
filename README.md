@@ -31,12 +31,12 @@ This library is work in progress. A lot of commands are missing, but the notific
 * &#x2716; serveredit
 * &#x2716; servergrouplist
 * &#x2716; servergroupadd
-* &#x2716; servergroupdel
+* &#x2714; servergroupdel
 * &#x2716; servergroupcopy
-* &#x2716; servergrouprename
+* &#x2714; servergrouprename
 * &#x2716; servergrouppermlist
-* &#x2716; servergroupaddperm
-* &#x2716; servergroupdelperm
+* &#x2714; servergroupaddperm
+* &#x2714; servergroupdelperm
 * &#x2716; servergroupaddclient
 * &#x2716; servergroupdelclient
 * &#x2716; servergroupclientlist
