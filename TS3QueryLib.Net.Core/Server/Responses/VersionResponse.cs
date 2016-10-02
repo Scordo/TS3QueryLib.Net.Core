@@ -7,11 +7,6 @@ namespace TS3QueryLib.Net.Core.Server.Responses
         public string Version { get; protected set; }
         public string Build { get; protected set; }
         public string Platform { get; protected set; }
-        
-        public override void ApplyResponseText(string responseText)
-        {
-            
-        }
 
         protected override void OnPostApplyResponse()
         {

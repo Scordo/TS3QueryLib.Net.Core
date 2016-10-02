@@ -44,16 +44,10 @@ namespace TS3QueryLib.Net.Core.TestApp
             Console.WriteLine("Register notify [Server-Text]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.TextServer).Execute(client).IsErroneous);
             Console.WriteLine("Register notify [Private-Text]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.TextPrivate).Execute(client).IsErroneous);
             Console.WriteLine("Register notify [TokenUsed]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.TokenUsed).Execute(client).IsErroneous);
-            //Console.WriteLine("Register notify [channel]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.Channel).Execute(client).IsErroneous);
+            
 
-            //Console.WriteLine(new GetBindingListCommand().Execute(client).GetDumpString());
-            //Console.WriteLine(new GetServerListShortCommand().Execute(client).GetDumpString());
-
-            //Console.WriteLine(new GetServerIdByPortCommand(9987).Execute(client).GetDumpString());
-
-            //Console.WriteLine(new VersionCommand().Execute(client).GetDumpString());
-
-            //Console.WriteLine(new ExecutableCommand<VersionResponse>("Version").Execute(client).GetDumpString());
+            //Console.WriteLine(new ServerListCommand(true).Execute(client).GetDumpString());
+            
 
             Console.WriteLine("Type a command or press [ENTER] to quit");
 
@@ -66,7 +60,10 @@ namespace TS3QueryLib.Net.Core.TestApp
                 string commandText = Console.ReadLine();
 
                 if (commandText.Length == 0)
+                {
+                    new LogoutCommand().Execute(client);
                     break;
+                }
 
                 string response = client.Send(commandText);
                 Console.ForegroundColor = ConsoleColor.Cyan;

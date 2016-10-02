@@ -3,9 +3,9 @@ using TS3QueryLib.Net.Core.Common.Responses;
 
 namespace TS3QueryLib.Net.Core.Server.Commands
 {
-    public class GetBindingListCommand : ExecutableCommand<ValueListCommandResponse<string>>
+    public class BindingListCommand : ExecutableValueListCommand<string>
     {
-        public GetBindingListCommand() : base("BindingList")
+        public BindingListCommand() : base("BindingList")
         {
             
         }

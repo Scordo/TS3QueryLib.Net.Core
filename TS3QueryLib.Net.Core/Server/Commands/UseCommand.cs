@@ -1,4 +1,6 @@
-﻿namespace TS3QueryLib.Net.Core.Server.Commands
+﻿using TS3QueryLib.Net.Core.Common.Commands;
+
+namespace TS3QueryLib.Net.Core.Server.Commands
 {
     public class UseCommand : ExecutableValuelessCommand
     {

@@ -13,7 +13,7 @@ namespace TS3QueryLib.Net.Core.Server.Entitities
 
         #endregion
 
-        public ServerListItemBase ApplyFrom(CommandParameterGroup currentParameterGroup, CommandParameterGroup firstParameterGroup)
+        ServerListItemBase IEntity<ServerListItemBase>.ApplyFrom(CommandParameterGroup currentParameterGroup, CommandParameterGroup firstParameterGroup)
         {
             if (currentParameterGroup == null)
                 throw new ArgumentNullException(nameof(currentParameterGroup));
