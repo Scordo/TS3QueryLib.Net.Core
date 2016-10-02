@@ -52,7 +52,7 @@ This library is work in progress. A lot of commands are missing, but the notific
 * &#x2714; logadd
 * &#x2714; gm
 * &#x2714; channellist
-* &#x2716; channelinfo
+* &#x2714; channelinfo
 * &#x2714; channelfind
 * &#x2714; channelmove
 * &#x2714; channelcreate
@@ -76,11 +76,11 @@ This library is work in progress. A lot of commands are missing, but the notific
 * &#x2714; channeladdperm
 * &#x2714; channeldelperm
 * &#x2714; clientlist
-* &#x2716; clientinfo
+* &#x2714; clientinfo
 * &#x2714; clientfind
 * &#x2714; clientedit
 * &#x2714; clientdblist
-* &#x2716; clientdbinfo
+* &#x2714; clientdbinfo
 * &#x2714; clientdbfind
 * &#x2714; clientdbedit
 * &#x2714; clientdbdelete
