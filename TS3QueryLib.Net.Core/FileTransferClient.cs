@@ -109,7 +109,7 @@ namespace TS3QueryLib.Net.Core
         {
             using (FileStream fileStream = File.OpenRead(filePath))
             {
-                await UploadFileAsync(fileTransferKey, (ulong) fileStream.Length, fileStream, numberOfBytesToSkip);
+                await UploadFileAsync(fileTransferKey, (ulong) fileStream.Length, fileStream, numberOfBytesToSkip).ConfigureAwait(false);
             }
         }
 
