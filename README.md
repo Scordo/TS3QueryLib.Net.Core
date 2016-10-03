@@ -1,6 +1,6 @@
 # TS3QueryLib.Net.Core
-This library allows you to query team speak 3 servers using the query port.<BR/>
-All queries are implemented type safe and the library is written in .Net Core.
+This library allows you to query TeamSpeak 3 servers using the query port.<BR/>
+All queries are implemented type-safe in .Net Core.
 
 **This library is work in progress and not final yet!** 
 
