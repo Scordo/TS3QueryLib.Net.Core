@@ -180,5 +180,26 @@ namespace TS3QueryLib.Net.Core.TestApp
             // download the file synchron
             transferClient.DownloadFile(ftInitDownloadResponse.FileTransferKey, ftInitDownloadResponse.FileSize.Value, targetFilePath);
         }
+
+        private static void UploadFileToCurrentChannel(QueryClient queryClient, string sourceFilePath)
+        {
+            // get the channel we're currenlty in
+            uint channelId = new WhoAmICommand().Execute(queryClient).ChannelId;
+
+            // create a rondom id for the file transfer
+            uint randomClientId = (uint)_randomForFileClientTransferId.Next(1, 10000);
+
+            // get only the filename
+            FileInfo sourceFileInfo = new FileInfo(sourceFilePath);
+
+            // initialize the file transfer to get the server file transfer key
+            FtInitUploadCommandResponse ftInitUploadCommandResponse = new FtInitUploadCommand(randomClientId, "/" + sourceFileInfo.Name, channelId, (ulong) sourceFileInfo.Length, false, false).Execute(queryClient);
+
+            // create the file transfer cleint with the host of the query client and the port we got from the init download response
+            FileTransferClient transferClient = new FileTransferClient(queryClient.Host, ftInitUploadCommandResponse.FileTransferPort ?? 30033);
+
+            // upload the file synchron
+            transferClient.UploadFile(ftInitUploadCommandResponse.FileTransferKey, (ulong)sourceFileInfo.Length, sourceFileInfo.FullName);
+        }
     }
 }
