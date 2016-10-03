@@ -13,8 +13,8 @@ namespace TS3QueryLib.Net.Core
     {
         #region Constants
 
-        private const int RECEIVE_BUFFER_SIZE = 4 * 1024; // 1 MB
-        private const int SEND_BUFFER_SIZE = 4 * 1024; // 1 MB
+        private const int RECEIVE_BUFFER_SIZE = 4 * 1024; // 4 kb
+        private const int SEND_BUFFER_SIZE = 4 * 1024; // 4 kb
 
         #endregion
 
@@ -139,7 +139,7 @@ namespace TS3QueryLib.Net.Core
 
                 await socket.ConnectAsync(endPoint).ConfigureAwait(false);
                 byte[] transferKeyBytes = Encoding.UTF8.GetBytes(fileTransferKey);
-
+                
                 // TODO: Make it work: the server currently closes the connection here and I dont know why :-s
                 int sentTransferKeyBytes = await SendAsync(socket, transferKeyBytes).ConfigureAwait(false);
 

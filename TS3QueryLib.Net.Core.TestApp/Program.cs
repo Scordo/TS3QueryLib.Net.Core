@@ -43,7 +43,7 @@ namespace TS3QueryLib.Net.Core.TestApp
             Console.WriteLine("Register notify [Server-Text]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.TextServer).Execute(client).IsErroneous);
             Console.WriteLine("Register notify [Private-Text]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.TextPrivate).Execute(client).IsErroneous);
             Console.WriteLine("Register notify [TokenUsed]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.TokenUsed).Execute(client).IsErroneous);
-            
+
             Console.WriteLine("Type a command or press [ENTER] to quit");
 
             do
@@ -193,8 +193,8 @@ namespace TS3QueryLib.Net.Core.TestApp
             FileInfo sourceFileInfo = new FileInfo(sourceFilePath);
 
             // initialize the file transfer to get the server file transfer key
-            FtInitUploadCommandResponse ftInitUploadCommandResponse = new FtInitUploadCommand(randomClientId, "/" + sourceFileInfo.Name, channelId, (ulong) sourceFileInfo.Length, false, false).Execute(queryClient);
-
+            FtInitUploadCommandResponse ftInitUploadCommandResponse = new FtInitUploadCommand(randomClientId, "/" + sourceFileInfo.Name, channelId, (ulong) sourceFileInfo.Length, true, false).Execute(queryClient);
+            
             // create the file transfer cleint with the host of the query client and the port we got from the init download response
             FileTransferClient transferClient = new FileTransferClient(queryClient.Host, ftInitUploadCommandResponse.FileTransferPort ?? 30033);
 
