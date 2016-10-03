@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace TS3QueryLib.Net.Core
 {
-    public interface IQueryClient
+    public interface IQueryClient : ICommandExecutor
     {
         bool Connected { get; }
         string Host { get; }

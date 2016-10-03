@@ -116,7 +116,7 @@ namespace TS3QueryLib.Net.Core
 
         public async Task<string> SendAsync(string messageToSend)
         {
-            await SendAsync(Socket, messageToSend + "\n");
+            await SendAsync(Socket, messageToSend + "\n").ConfigureAwait(false);
 
             do
             {
