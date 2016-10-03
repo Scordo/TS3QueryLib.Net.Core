@@ -172,11 +172,25 @@ namespace TS3QueryLib.Net.Core
 
                     if (statusLineMatch.Success)
                     {
-                        MessageResponses.Enqueue(statusLineMatch.Value);
+                        string responseText = statusLineMatch.Value;
+
+                        // happens when there is a notification between the body and statusline of a command response --> I think this is a bug of ts3
+                        if (responseText.Contains("\n\rnotify"))
+                        {
+                            // extract the notification data and raise notification
+                            notifyMatch = GetNotifyResponseMatchBetweenCommandResponse(responseText);
+                            string eventName = notifyMatch.Groups["eventname"].Value;
+                            NotificationHub?.HandleRawNotification(this, eventName, eventName + notifyMatch.Groups["eventdata"].Value);
+
+                            // modify the response thext used for the command response
+                            responseText = notifyMatch.Groups["part1"].Value + notifyMatch.Groups["part2"].Value;
+                        }
+
+                        MessageResponses.Enqueue(responseText);
                         ReceivedMessagesBuffer.Remove(0, statusLineMatch.Length);
 
                         CommandResponse commandResponse = new CommandResponse();
-                        commandResponse.ApplyResponseText(statusLineMatch.Value);
+                        commandResponse.ApplyResponseText(responseText);
 
                         if (commandResponse.IsBanned)
                         {
@@ -224,6 +238,13 @@ namespace TS3QueryLib.Net.Core
             const string PATTERN = @"^(?<eventname>notify[^\s]+)\s+.+?\x0A\x0D";
 
             return text.StartsWith("notify", StringComparison.OrdinalIgnoreCase) ? Regex.Match(text, PATTERN, RegexOptions.Singleline) : Match.Empty;
+        }
+
+        private static Match GetNotifyResponseMatchBetweenCommandResponse(string text)
+        {
+            const string PATTERN = @"^(?<part1>.*?\x0A\x0D)(?<eventname>notify[^\s]+)(?<eventdata>\s+.+?)\x0A\x0D(?<part2>.*)$";
+
+            return Regex.Match(text, PATTERN, RegexOptions.Singleline);
         }
 
         protected static Match GetStatusLineMatch(string responseText)
