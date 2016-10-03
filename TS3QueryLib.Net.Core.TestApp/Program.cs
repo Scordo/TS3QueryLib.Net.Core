@@ -1,8 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using TS3QueryLib.Net.Core.Common;
 using TS3QueryLib.Net.Core.Server.Commands;
 using TS3QueryLib.Net.Core.Server.Entitities;
 using TS3QueryLib.Net.Core.Server.Notification;
+using TS3QueryLib.Net.Core.Server.Responses;
 
 namespace TS3QueryLib.Net.Core.TestApp
 {
@@ -149,6 +152,33 @@ namespace TS3QueryLib.Net.Core.TestApp
             Console.WriteLine($"Connected: {connectResponse.Success}");
             Console.WriteLine($"Query-Target: {connectResponse.QueryType}");
             Console.WriteLine($"Greeting: {connectResponse.Greeting}");
+        }
+
+        private static readonly Random _randomForFileClientTransferId = new Random();
+
+        private static void DownloadFirstFileInCurrentChannel(QueryClient queryClient, string targetDirectory)
+        {
+            // get the channel we're currenlty in
+            uint channelId = new WhoAmICommand().Execute(queryClient).ChannelId;
+
+            // create a rondom id for the file transfer
+            uint randomClientId = (uint)_randomForFileClientTransferId.Next(1,10000);
+            
+            // get the first file in the current channel
+            FileTransferFileEntry firstFile = new FtGetFileListCommand(channelId, "/").Execute(queryClient).Values.FirstOrDefault();
+
+            // initialize the file transfer to get the server file transfer key
+            FtInitDownloadCommandResponse ftInitDownloadResponse = new FtInitDownloadCommand(randomClientId, "/"+firstFile.Name, firstFile.ChannelId, 0).Execute(queryClient);
+
+            // calculate the target file path
+            string fileName = firstFile.Name.Substring(firstFile.Name.LastIndexOf("/", StringComparison.Ordinal) + 1);
+            string targetFilePath = Path.Combine(targetDirectory, fileName);
+
+            // create the file transfer cleint with the host of the query client and the port we got from the init download response
+            FileTransferClient transferClient = new FileTransferClient(queryClient.Host, ftInitDownloadResponse.FileTransferPort ?? 30033);
+
+            // download the file synchron
+            transferClient.DownloadFile(ftInitDownloadResponse.FileTransferKey, ftInitDownloadResponse.FileSize.Value, targetFilePath);
         }
     }
 }
