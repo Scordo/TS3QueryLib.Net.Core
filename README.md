@@ -1,13 +1,20 @@
 # TS3QueryLib.Net.Core
 This library allows you to query team speak 3 servers using the query port.  All queries are implemented type safe and the library is written to work with .Net Core.
 
-This library is work in progress. 
-* File tranfer functionality is currently missing and will be implemented soon!
+**This library is work in progress.** 
 
+**File tranfer functionality** (&#x2714; implemented - &#x2716; not implemented yet):
+* &#x2714; Download
+* &#x2716; Upload
 
-**List of Command-Implementation-State** (&#x2714; implemented - &#x2716; not implemented yet):
+**List of Notifications** (&#x2714; implemented - &#x2716; not implemented yet):
+* &#x2714; notifyclientleftview
+* &#x2714; notifytextmessage
+* &#x2714; notifyclientmoved
+* &#x2714; notifycliententerview
+* &#x2714; notifytokenused
 
-
+**List of Commands** (&#x2714; implemented - &#x2716; not implemented yet):
 * &#x2714; help
 * &#x2714; quit
 * &#x2714; login
