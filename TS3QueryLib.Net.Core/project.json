@@ -4,7 +4,7 @@
     "Jens Hofmann"
   ],
   "copyright": "Copyright © Jens Hofmann 2016",
-  "description": "Teamspeak 3 Query Port Library for .Net Core",
+  "description": "TeamSpeak 3 Query Port Library for .Net Core",
   "packOptions": {
     "licenseUrl": "https://github.com/Scordo/TS3QueryLib.Net.Core/blob/master/LICENSE",
     "owners": [
@@ -14,7 +14,7 @@
       "type": "git",
       "url": "https://github.com/Scordo/TS3QueryLib.Net.Core"
     },
-    "summary": "Teamspeak 3 Query Port Library for .Net Core",
+    "summary": "TeamSpeak 3 Query Port Library for .Net Core",
     "tags": [
       "TeamSpeak",
       "Query",
