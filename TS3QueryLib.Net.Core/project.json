@@ -3,6 +3,8 @@
   "authors": [
     "Jens Hofmann"
   ],
+  "title": "TS3QueryLib.Net.Core",
+  "projectUrl": "https://github.com/Scordo/TS3QueryLib.Net.Core",
   "copyright": "Copyright © Jens Hofmann 2016",
   "description": "TeamSpeak 3 Query Port Library for .Net Core",
   "packOptions": {
@@ -20,7 +22,8 @@
       "Query",
       "C#",
       "CSharp"
-    ]
+    ],
+    "releaseNotes": "Early alpha of a .net core version of TS3QueryLib.Net"
   },
 
   "dependencies": {
