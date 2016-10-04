@@ -1,13 +1,44 @@
 ﻿{
-  "version": "1.0.0-*",
+  "version": "0.1.1-alpha",
+  "authors": [
+    "Jens Hofmann"
+  ],
+  "copyright": "Copyright © Jens Hofmann 2016",
+  "description": "Teamspeak 3 Query Port Library for .Net Core",
+  "packOptions": {
+    "licenseUrl": "https://github.com/Scordo/TS3QueryLib.Net.Core/blob/master/LICENSE",
+    "owners": [
+      "Jens Hofmann"
+    ],
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Scordo/TS3QueryLib.Net.Core"
+    },
+    "summary": "Teamspeak 3 Query Port Library for .Net Core",
+    "tags": [
+      "TeamSpeak",
+      "Query",
+      "C#",
+      "CSharp"
+    ]
+  },
 
   "dependencies": {
     "NETStandard.Library": "1.6.0"
   },
 
   "frameworks": {
+    "netstandard1.4": {
+      "imports": "dnxcore50"
+    },
     "netstandard1.6": {
       "imports": "dnxcore50"
     }
+  },
+
+  "scripts": {
+    "postcompile": [
+      "dotnet pack --no-build --configuration %compile:Configuration%"
+    ]
   }
 }

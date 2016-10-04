@@ -9,7 +9,9 @@
       "type": "platform",
       "version": "1.0.1"
     },
-    "TS3QueryLib.Net.Core": "1.0.0-*"
+    "TS3QueryLib.Net.Core": {
+      "target": "project"
+    }
   },
 
   "frameworks": {
