@@ -1,3 +1,4 @@
+os: osx
 language: csharp
 solution: TS3QueryLib.Net.Core.sln
 mono: none
