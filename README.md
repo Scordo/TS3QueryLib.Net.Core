@@ -1,9 +1,9 @@
-# TS3QueryLib.Net.Core
+# TS3QueryLib.Net.Core 
+[![NuGet Status](https://img.shields.io/nuget/vpre/TS3QueryLib.Net.Core.svg)](https://www.nuget.org/packages/TS3QueryLib.Net.Core)<BR/><BR/>
 This library allows you to query TeamSpeak 3 servers using the query port.<BR/>
-All queries are implemented type-safe in .Net Core.
+All queries are implemented type-safe in .Net Core. 
 
 **This library is work in progress and not final yet!** <BR/>
-Nuget-Package: https://www.nuget.org/packages/TS3QueryLib.Net.Core
 
 **Query Types** (&#x2714; implemented - &#x2716; not implemented yet):
 * &#x2714; Server
