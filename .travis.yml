@@ -4,3 +4,11 @@ language: csharp
 solution: TS3QueryLib.Net.Core.sln
 mono: none
 dotnet: 1.0.0-preview2-003121
+
+branches:  
+  only:
+    - master
+    
+script:
+  - dotnet restore
+  - dotnet --verbose build -c Release
