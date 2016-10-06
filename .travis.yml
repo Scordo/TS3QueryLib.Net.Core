@@ -11,4 +11,4 @@ branches:
     
 script:
   - dotnet restore
-  - dotnet --verbose build -c Release
+  - dotnet --verbose build -c Release **/project.json
