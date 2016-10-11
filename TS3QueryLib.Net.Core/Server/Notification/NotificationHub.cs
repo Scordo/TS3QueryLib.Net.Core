@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using TS3QueryLib.Net.Core.Common.Notification;
+using TS3QueryLib.Net.Core.Server.Notification.EventArgs;
 using TS3QueryLib.Net.Core.Server.Notification.Handlers;
 
 namespace TS3QueryLib.Net.Core.Server.Notification
@@ -13,6 +14,9 @@ namespace TS3QueryLib.Net.Core.Server.Notification
         public ClientMessageNotificationHandler ClientMessage { get; } = new ClientMessageNotificationHandler();
         public ClientMovedNotificationHandler ClientMoved { get; } = new ClientMovedNotificationHandler();
         public TokenUsedNotificationHandler TokenUsed { get; } = new TokenUsedNotificationHandler();
+        public ChannelEditedNotificationHandler ChannelEdited { get; } = new ChannelEditedNotificationHandler();
+        public ChannelMovedNotificationHandler ChannelMoved { get; } = new ChannelMovedNotificationHandler();
+        public ChannelDescriptionChangedNotificationHandler ChannelDescriptionChanged { get; } = new ChannelDescriptionChangedNotificationHandler();
 
 
         public NotificationHub() : this(SynchronizationContext.Current)
@@ -26,7 +30,9 @@ namespace TS3QueryLib.Net.Core.Server.Notification
             AddHandler("notifyclientleftview", ClientLeft);
             AddHandler("notifytextmessage", ClientMessage);
             AddHandler("notifyclientmoved", ClientMoved);
-            AddHandler("notifytokenused", TokenUsed);
+            AddHandler("notifychanneledited", ChannelEdited);
+            AddHandler("notifychannelmoved", ChannelMoved);
+            AddHandler("notifychanneldescriptionchanged", ChannelDescriptionChanged);
         }
 
         #endregion

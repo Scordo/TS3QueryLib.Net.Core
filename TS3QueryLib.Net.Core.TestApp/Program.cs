@@ -26,6 +26,9 @@ namespace TS3QueryLib.Net.Core.TestApp
             notifications.ClientMoved.CreatingTemporaryChannel += ClientMoved_CreatingTemporaryChannel;
             notifications.ClientMoved.JoiningChannelForced += ClientMoved_JoiningChannelForced;
             notifications.TokenUsed.Triggered += TokenUsed_Triggered;
+            notifications.ChannelEdited.Triggered += ChannelEdited_Triggered;
+            notifications.ChannelMoved.Triggered += ChannelMoved_Triggered;
+            notifications.ChannelDescriptionChanged.Triggered += ChannelDescriptionChanged_Triggered;
 
             QueryClient client = new QueryClient(notificationHub: notifications);
             client.BanDetected += Client_BanDetected;
@@ -83,6 +86,20 @@ namespace TS3QueryLib.Net.Core.TestApp
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("!!! BAN DETECTED !!!");
             Console.ResetColor();
+        }
+
+        private static void ChannelDescriptionChanged_Triggered(object sender, Server.Notification.EventArgs.ChannelDescriptionChangedEventArgs e)
+        {
+            Console.WriteLine($"Channel description changed: Channel description of channel with id {e.ChannelId} has changed.");
+        }
+
+        private static void ChannelMoved_Triggered(object sender, Server.Notification.EventArgs.ChannelMovedEventArgs e)
+        {
+            Console.WriteLine($"Channel move: Channel with Id {e.ChannelId}, parent channel id {e.ParentChannelId} and order {e.Order} was moved by {e.InvokerName} for reason with id  {e.ReasonId}");
+        }
+        private static void ChannelEdited_Triggered(object sender, Server.Notification.EventArgs.ChannelEditedEventArgs e)
+        {
+            Console.WriteLine($"Channel Edit: Channel with Id {e.ChannelId} was edited by {e.InvokerName} for reason with id {e.ReasonId}");
         }
 
         private static void TokenUsed_Triggered(object sender, Server.Notification.EventArgs.TokenUsedEventArgs e)
