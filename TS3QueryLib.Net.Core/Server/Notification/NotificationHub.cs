@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using TS3QueryLib.Net.Core.Common.Notification;
-using TS3QueryLib.Net.Core.Server.Notification.EventArgs;
 using TS3QueryLib.Net.Core.Server.Notification.Handlers;
 
 namespace TS3QueryLib.Net.Core.Server.Notification
@@ -17,6 +16,7 @@ namespace TS3QueryLib.Net.Core.Server.Notification
         public ChannelEditedNotificationHandler ChannelEdited { get; } = new ChannelEditedNotificationHandler();
         public ChannelMovedNotificationHandler ChannelMoved { get; } = new ChannelMovedNotificationHandler();
         public ChannelDescriptionChangedNotificationHandler ChannelDescriptionChanged { get; } = new ChannelDescriptionChangedNotificationHandler();
+        public UnknownNotificationHandler UnknownNotificationReceived { get; } = new UnknownNotificationHandler();
 
 
         public NotificationHub() : this(SynchronizationContext.Current)
@@ -33,6 +33,7 @@ namespace TS3QueryLib.Net.Core.Server.Notification
             AddHandler("notifychanneledited", ChannelEdited);
             AddHandler("notifychannelmoved", ChannelMoved);
             AddHandler("notifychanneldescriptionchanged", ChannelDescriptionChanged);
+            AddHandler("*", UnknownNotificationReceived);
         }
 
         #endregion

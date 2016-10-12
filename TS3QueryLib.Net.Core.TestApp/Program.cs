@@ -29,6 +29,7 @@ namespace TS3QueryLib.Net.Core.TestApp
             notifications.ChannelEdited.Triggered += ChannelEdited_Triggered;
             notifications.ChannelMoved.Triggered += ChannelMoved_Triggered;
             notifications.ChannelDescriptionChanged.Triggered += ChannelDescriptionChanged_Triggered;
+            notifications.UnknownNotificationReceived.Triggered += UnknownNotificationReceived_Triggered;
 
             QueryClient client = new QueryClient(notificationHub: notifications);
             client.BanDetected += Client_BanDetected;
@@ -39,10 +40,9 @@ namespace TS3QueryLib.Net.Core.TestApp
             Console.WriteLine("Admin login:" + !new LoginCommand("serveradmin", "RWkzzXu9").Execute(client).IsErroneous);
             Console.WriteLine("Switch to server with port 9987: " + !new UseCommand(9987).Execute(client).IsErroneous);
 
-            uint? channelId = 1;
             Console.WriteLine("Register notify [Server]: "+ !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.Server).Execute(client).IsErroneous);
-            Console.WriteLine("Register notify [Channel]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.Channel, channelId).Execute(client).IsErroneous);
-            Console.WriteLine("Register notify [Channel-Text]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.TextChannel, channelId).Execute(client).IsErroneous);
+            Console.WriteLine("Register notify [Channel]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.Channel, 0).Execute(client).IsErroneous); // 0 = all channels
+            Console.WriteLine("Register notify [Channel-Text]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.TextChannel, 1).Execute(client).IsErroneous);
             Console.WriteLine("Register notify [Server-Text]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.TextServer).Execute(client).IsErroneous);
             Console.WriteLine("Register notify [Private-Text]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.TextPrivate).Execute(client).IsErroneous);
             Console.WriteLine("Register notify [TokenUsed]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.TokenUsed).Execute(client).IsErroneous);
@@ -73,7 +73,7 @@ namespace TS3QueryLib.Net.Core.TestApp
             
             Console.WriteLine("Bye Bye!");
         }
-
+        
         private static void Client_ConnectionClosed(object sender, EventArgs<string>  e)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -86,6 +86,11 @@ namespace TS3QueryLib.Net.Core.TestApp
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("!!! BAN DETECTED !!!");
             Console.ResetColor();
+        }
+
+        private static void UnknownNotificationReceived_Triggered(object sender, Server.Notification.EventArgs.UnknownNotificationEventArgs e)
+        {
+            Console.WriteLine($"Unknown notification: [Name:{e.Name}] [ResponseText:{e.ResponseText}]");
         }
 
         private static void ChannelDescriptionChanged_Triggered(object sender, Server.Notification.EventArgs.ChannelDescriptionChangedEventArgs e)

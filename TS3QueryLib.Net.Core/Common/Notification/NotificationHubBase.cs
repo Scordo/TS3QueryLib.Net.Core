@@ -84,7 +84,7 @@ namespace TS3QueryLib.Net.Core.Common.Notification
         protected void HandleRawNotificationOnSyncContextOrInCurrentThread(IQueryClient queryClient, string notificationName, string responseText)
         {
             INotificationHandler handler;
-            if(NotificationHandlerMapping.TryGetValue(notificationName, out handler))
+            if(NotificationHandlerMapping.TryGetValue(notificationName, out handler) || NotificationHandlerMapping.TryGetValue("*", out handler))
                 handler.HandleResponse(queryClient, responseText);
         }
 
