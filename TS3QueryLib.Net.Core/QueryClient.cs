@@ -7,12 +7,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TS3QueryLib.Net.Core.Common;
+using TS3QueryLib.Net.Core.Common.Commands;
 using TS3QueryLib.Net.Core.Common.Notification;
 using TS3QueryLib.Net.Core.Common.Responses;
 
 namespace TS3QueryLib.Net.Core
 {
-    public class QueryClient : ICommandExecutor, IQueryClient
+    public class QueryClient : IQueryClient
     {
         #region Constants
 
@@ -47,6 +48,10 @@ namespace TS3QueryLib.Net.Core
         private StringBuilder ReceivedMessagesBuffer { get; } = new StringBuilder();
         private ConcurrentQueue<string> MessageResponses { get; } = new ConcurrentQueue<string>();
         private Task ReadLoopTask { get; set; }
+        /// <summary>
+        /// Gets or sets an optional predicate action which is executed before a command is sent. If the predicate action returns <value>true</value>, the command is sent, otherwise not.
+        /// </summary>
+        public Func<ICommand, IQueryClient, bool> SendCommandValidationPredicate { get; set; }
 
         #endregion
 
@@ -269,14 +274,14 @@ namespace TS3QueryLib.Net.Core
 
         #region ICommandExecutor Implementation
 
-        string ICommandExecutor.Execute(string commandText)
+        string ICommandExecutor.Execute(ICommand command)
         {
-            return Send(commandText);
+            return SendCommandValidationPredicate?.Invoke(command, this) == false ? @"error id=256 msg=command\snot\ssent" : Send(command?.ToString());
         }
 
-        async Task<string> ICommandExecutor.ExecuteAsync(string commandText)
+        async Task<string> ICommandExecutor.ExecuteAsync(ICommand command)
         {
-            return await SendAsync(commandText).ConfigureAwait(false);
+            return SendCommandValidationPredicate != null && !await Task.Run(() => SendCommandValidationPredicate(command, this)) ? @"error id=256 msg=command\snot\ssent" : await SendAsync(command?.ToString()).ConfigureAwait(false);
         }
 
         #endregion

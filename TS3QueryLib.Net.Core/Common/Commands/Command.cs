@@ -6,7 +6,7 @@ using TS3QueryLib.Net.Core.Common.CommandHandling;
 
 namespace TS3QueryLib.Net.Core.Common.Commands
 {
-    public class Command
+    public class Command : ICommand
     {
         #region Properties
 
