@@ -27,7 +27,9 @@ namespace TS3QueryLib.Net.Core.TestApp
             notifications.ClientMoved.JoiningChannelForced += ClientMoved_JoiningChannelForced;
             notifications.TokenUsed.Triggered += TokenUsed_Triggered;
             notifications.ChannelEdited.Triggered += ChannelEdited_Triggered;
+            notifications.ChannelCreated.Triggered += ChannelCreated_Triggered;
             notifications.ChannelMoved.Triggered += ChannelMoved_Triggered;
+            notifications.ChannelDeleted.Triggered += ChannelDeleted_Triggered;
             notifications.ChannelDescriptionChanged.Triggered += ChannelDescriptionChanged_Triggered;
             notifications.UnknownNotificationReceived.Triggered += UnknownNotificationReceived_Triggered;
 
@@ -98,10 +100,21 @@ namespace TS3QueryLib.Net.Core.TestApp
             Console.WriteLine($"Channel description changed: Channel description of channel with id {e.ChannelId} has changed.");
         }
 
+        private static void ChannelDeleted_Triggered(object sender, Server.Notification.EventArgs.ChannelDeletedEventArgs e)
+        {
+            Console.WriteLine($"Channel Delete: Channel with Id {e.ChannelId} was deleted by {e.InvokerName}.");
+        }
+
         private static void ChannelMoved_Triggered(object sender, Server.Notification.EventArgs.ChannelMovedEventArgs e)
         {
             Console.WriteLine($"Channel move: Channel with Id {e.ChannelId}, parent channel id {e.ParentChannelId} and order {e.Order} was moved by {e.InvokerName} for reason with id  {e.ReasonId}");
         }
+
+        private static void ChannelCreated_Triggered(object sender, Server.Notification.EventArgs.ChannelCreatedEventArgs e)
+        {
+            Console.WriteLine($"Channel Create: Channel with Id {e.ChannelId} was created by {e.InvokerName}");
+        }
+
         private static void ChannelEdited_Triggered(object sender, Server.Notification.EventArgs.ChannelEditedEventArgs e)
         {
             Console.WriteLine($"Channel Edit: Channel with Id {e.ChannelId} was edited by {e.InvokerName} for reason with id {e.ReasonId}");

@@ -4,19 +4,13 @@ using TS3QueryLib.Net.Core.Common.CommandHandling;
 
 namespace TS3QueryLib.Net.Core.Server.Notification.EventArgs
 {
-    public class ChannelEditedEventArgs : System.EventArgs, IDump
+    public class ChannelCreatedEventArgs : System.EventArgs, IDump
     {
         #region Properties
 
-        public uint? ChannelId { get; protected set; }
-        public uint? ReasonId { get; protected set; }
-        public uint? InvokerId { get; protected set; }
-        public string InvokerName { get; protected set; }
-        public string InvokerUniqueId { get; protected set; }
-        public string ChannelName { get; protected set; }
-
-        
+        public int? ChannelId { get; protected set; }
         public int? ParentId { get; protected set; }
+        public string Name { get; protected set; }
         public string Topic { get; protected set; }
         public string NamePhonetic { get; protected set; }
         public int? Codec { get; protected set; }
@@ -34,24 +28,23 @@ namespace TS3QueryLib.Net.Core.Server.Notification.EventArgs
         public int? FlagMaxClientsUnlimited { get; protected set; }
         public int? FlagMaxFamilyClientsUnlimited { get; protected set; }
         public int? FlagMaxFamilyClientsInherited { get; protected set; }
+        public int? InvokerId { get; protected set; }
+        public string InvokerName { get; protected set; }
+        public string InvokerUniqueId { get; protected set; }
 
         #endregion
 
         #region Constructors
 
-        public ChannelEditedEventArgs(CommandParameterGroupList commandParameterGroupList)
+
+        public ChannelCreatedEventArgs(CommandParameterGroupList commandParameterGroupList)
         {
             if (commandParameterGroupList == null)
                 throw new ArgumentNullException(nameof(commandParameterGroupList));
 
-            ChannelId = commandParameterGroupList.GetParameterValue<uint>("cid");
-            ReasonId = commandParameterGroupList.GetParameterValue<uint>("reasonid");
-            InvokerId = commandParameterGroupList.GetParameterValue<uint>("invokerid");
-            InvokerName = commandParameterGroupList.GetParameterValue<string>("invokername");
-            InvokerUniqueId = commandParameterGroupList.GetParameterValue<string>("invokeruid");
-            ChannelName = commandParameterGroupList.GetParameterValue<string>("channel_name");
-            
+            ChannelId = commandParameterGroupList.GetParameterValue<int?>("cid");
             ParentId = commandParameterGroupList.GetParameterValue<int?>("cpid");
+            Name = commandParameterGroupList.GetParameterValue<string>("channel_name");
             Topic = commandParameterGroupList.GetParameterValue<string>("channel_topic");
             NamePhonetic = commandParameterGroupList.GetParameterValue<string>("channel_name_phonetic");
             Codec = commandParameterGroupList.GetParameterValue<int?>("channel_codec");
@@ -63,6 +56,9 @@ namespace TS3QueryLib.Net.Core.Server.Notification.EventArgs
             CodecIsUnencrypted = commandParameterGroupList.GetParameterValue<int?>("channel_codec_is_unencrypted");
             FlagMaxFamilyClientsUnlimited = commandParameterGroupList.GetParameterValue<int?>("channel_flag_maxfamilyclients_unlimited");
             FlagMaxFamilyClientsInherited = commandParameterGroupList.GetParameterValue<int?>("channel_flag_maxfamilyclients_inherited");
+            InvokerId = commandParameterGroupList.GetParameterValue<int?>("invokerid");
+            InvokerName = commandParameterGroupList.GetParameterValue<string>("invokername");
+            InvokerUniqueId = commandParameterGroupList.GetParameterValue<string>("invokeruid");
             DeleteDelay = commandParameterGroupList.GetParameterValue<int?>("channel_delete_delay");
             FlagPassword = commandParameterGroupList.GetParameterValue<int?>("channel_flag_password");
             FlagPermanent = commandParameterGroupList.GetParameterValue<int?>("channel_flag_permanent");

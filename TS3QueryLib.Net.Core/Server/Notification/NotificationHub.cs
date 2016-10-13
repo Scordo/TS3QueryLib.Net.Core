@@ -14,7 +14,9 @@ namespace TS3QueryLib.Net.Core.Server.Notification
         public ClientMovedNotificationHandler ClientMoved { get; } = new ClientMovedNotificationHandler();
         public TokenUsedNotificationHandler TokenUsed { get; } = new TokenUsedNotificationHandler();
         public ChannelEditedNotificationHandler ChannelEdited { get; } = new ChannelEditedNotificationHandler();
+        public ChannelCreatedNotificationHandler ChannelCreated { get; } = new ChannelCreatedNotificationHandler();
         public ChannelMovedNotificationHandler ChannelMoved { get; } = new ChannelMovedNotificationHandler();
+        public ChannelDeletedNotificationHandler ChannelDeleted { get; } = new ChannelDeletedNotificationHandler();
         public ChannelDescriptionChangedNotificationHandler ChannelDescriptionChanged { get; } = new ChannelDescriptionChangedNotificationHandler();
         public UnknownNotificationHandler UnknownNotificationReceived { get; } = new UnknownNotificationHandler();
 
@@ -31,7 +33,9 @@ namespace TS3QueryLib.Net.Core.Server.Notification
             AddHandler("notifytextmessage", ClientMessage);
             AddHandler("notifyclientmoved", ClientMoved);
             AddHandler("notifychanneledited", ChannelEdited);
+            AddHandler("notifychannelcreated", ChannelCreated);
             AddHandler("notifychannelmoved", ChannelMoved);
+            AddHandler("notifychanneldeleted", ChannelDeleted);
             AddHandler("notifychanneldescriptionchanged", ChannelDescriptionChanged);
             AddHandler("*", UnknownNotificationReceived);
         }
