@@ -31,6 +31,7 @@ namespace TS3QueryLib.Net.Core.TestApp
             notifications.ChannelMoved.Triggered += ChannelMoved_Triggered;
             notifications.ChannelDeleted.Triggered += ChannelDeleted_Triggered;
             notifications.ChannelDescriptionChanged.Triggered += ChannelDescriptionChanged_Triggered;
+            notifications.ChannelPasswordChanged.Triggered += ChannelPasswordChanged_Triggered;
             notifications.UnknownNotificationReceived.Triggered += UnknownNotificationReceived_Triggered;
 
             QueryClient client = new QueryClient(notificationHub: notifications);
@@ -93,6 +94,11 @@ namespace TS3QueryLib.Net.Core.TestApp
         private static void UnknownNotificationReceived_Triggered(object sender, Server.Notification.EventArgs.UnknownNotificationEventArgs e)
         {
             Console.WriteLine($"Unknown notification: [Name:{e.Name}] [ResponseText:{e.ResponseText}]");
+        }
+
+        private static void ChannelPasswordChanged_Triggered(object sender, Server.Notification.EventArgs.ChannelPasswordChangedEventArgs e)
+        {
+            Console.WriteLine($"Channel password changed: Channel password of channel with id {e.ChannelId} has changed.");
         }
 
         private static void ChannelDescriptionChanged_Triggered(object sender, Server.Notification.EventArgs.ChannelDescriptionChangedEventArgs e)

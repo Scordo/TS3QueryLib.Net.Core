@@ -15,15 +15,16 @@ All queries are implemented type-safe in .Net Core.
 
 **List of Notifications** (&#x2714; implemented - &#x2716; not implemented yet):
 * &#x2714; notifyclientleftview
-* &#x2714; notifytextmessage
-* &#x2714; notifyclientmoved
 * &#x2714; notifycliententerview
+* &#x2714; notifyclientmoved
+* &#x2714; notifytextmessage
 * &#x2714; notifytokenused
 * &#x2714; notifychanneledited
 * &#x2714; notifychannelcreated
 * &#x2714; notifychannelmoved
 * &#x2714; notifychanneldeleted
 * &#x2714; notifychanneldescriptionchanged
+* &#x2714; notifychannelpasswordchanged
 
 **List of Commands** (&#x2714; implemented - &#x2716; not implemented yet):
 * &#x2714; help
