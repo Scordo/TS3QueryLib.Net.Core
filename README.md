@@ -25,6 +25,7 @@ All queries are implemented type-safe in .Net Core.
 * &#x2714; notifychanneldeleted
 * &#x2714; notifychanneldescriptionchanged
 * &#x2714; notifychannelpasswordchanged
+* &#x2714; notifyserveredited
 
 **List of Commands** (&#x2714; implemented - &#x2716; not implemented yet):
 * &#x2714; help

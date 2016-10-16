@@ -32,6 +32,7 @@ namespace TS3QueryLib.Net.Core.TestApp
             notifications.ChannelDeleted.Triggered += ChannelDeleted_Triggered;
             notifications.ChannelDescriptionChanged.Triggered += ChannelDescriptionChanged_Triggered;
             notifications.ChannelPasswordChanged.Triggered += ChannelPasswordChanged_Triggered;
+            notifications.ServerEdited.Triggered += ServerEdited_Triggered;
             notifications.UnknownNotificationReceived.Triggered += UnknownNotificationReceived_Triggered;
 
             QueryClient client = new QueryClient(notificationHub: notifications);
@@ -76,7 +77,9 @@ namespace TS3QueryLib.Net.Core.TestApp
             
             Console.WriteLine("Bye Bye!");
         }
+
         
+
         private static void Client_ConnectionClosed(object sender, EventArgs<string>  e)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -94,6 +97,11 @@ namespace TS3QueryLib.Net.Core.TestApp
         private static void UnknownNotificationReceived_Triggered(object sender, Server.Notification.EventArgs.UnknownNotificationEventArgs e)
         {
             Console.WriteLine($"Unknown notification: [Name:{e.Name}] [ResponseText:{e.ResponseText}]");
+        }
+
+        private static void ServerEdited_Triggered(object sender, Server.Notification.EventArgs.ServerEditedEventArgs e)
+        {
+            Console.WriteLine($"Server Edit: Server was edited by {e.InvokerName} for reason with id {e.ReasonId}");
         }
 
         private static void ChannelPasswordChanged_Triggered(object sender, Server.Notification.EventArgs.ChannelPasswordChangedEventArgs e)
