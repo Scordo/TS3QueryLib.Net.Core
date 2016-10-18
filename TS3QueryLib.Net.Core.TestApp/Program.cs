@@ -35,7 +35,8 @@ namespace TS3QueryLib.Net.Core.TestApp
             notifications.ServerEdited.Triggered += ServerEdited_Triggered;
             notifications.UnknownNotificationReceived.Triggered += UnknownNotificationReceived_Triggered;
 
-            QueryClient client = new QueryClient(notificationHub: notifications);
+            // The client is configured to send a heartbeat every 30 seconds, the default is not to send a keep alive
+            QueryClient client = new QueryClient(notificationHub: notifications, keepAliveInterval: TimeSpan.FromSeconds(30));
             client.BanDetected += Client_BanDetected;
             client.ConnectionClosed += Client_ConnectionClosed;
             Connect(client);

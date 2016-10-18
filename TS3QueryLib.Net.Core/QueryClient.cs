@@ -42,12 +42,14 @@ namespace TS3QueryLib.Net.Core
         public string Host { get; }
         public int Port { get; }
         protected INotificationHub NotificationHub { get; }
+        protected TimeSpan? KeepAliveInterval { get; private set; }
         protected Socket Socket { get; private set; }
         public EndPoint RemoteEndPoint { get; private set; }
         public bool Connected { get; protected set; }
         private StringBuilder ReceivedMessagesBuffer { get; } = new StringBuilder();
         private ConcurrentQueue<string> MessageResponses { get; } = new ConcurrentQueue<string>();
         private Task ReadLoopTask { get; set; }
+        private Task KeepAliveTask { get; set; }
         /// <summary>
         /// Gets or sets an optional predicate action which is executed before a command is sent. If the predicate action returns <value>true</value>, the command is sent, otherwise not.
         /// </summary>
@@ -63,13 +65,15 @@ namespace TS3QueryLib.Net.Core
         /// <param name="host">The host to connect to</param>
         /// <param name="port">The port to connect to</param>
         /// <param name="notificationHub">An optional hub wich will handle notifications</param>
-        public QueryClient(string host = null, ushort? port = null, INotificationHub notificationHub = null)
+        /// <param name="keepAliveInterval">The keep alive interval used to send heart beats in a specific interval to the server to not get timed out (disconnected)</param>
+        public QueryClient(string host = null, ushort? port = null, INotificationHub notificationHub = null, TimeSpan? keepAliveInterval = null)
         {
             Host = host ?? "localhost";
             Port = port ?? 10011;
             NotificationHub = notificationHub;
+            KeepAliveInterval = keepAliveInterval;
         }
-        
+
         #endregion
 
         #region Public Methods
@@ -111,6 +115,7 @@ namespace TS3QueryLib.Net.Core
             
             Connected = true;
             ReadLoopTask = Task.Factory.StartNew(ReadLoop, TaskCreationOptions.LongRunning);
+            KeepAliveTask = Task.Factory.StartNew(KeepAliveLoop, TaskCreationOptions.LongRunning);
             return new ConnectResponse(message, queryType, true);
         }
 
@@ -143,6 +148,15 @@ namespace TS3QueryLib.Net.Core
         #endregion
 
         #region Non Public Methods
+
+        protected async void KeepAliveLoop()
+        {
+            while (Socket != null && KeepAliveInterval.HasValue)
+            {
+                await Task.Delay(KeepAliveInterval.Value);
+                await SendAsync(Socket, "\n");
+            }
+        }
 
         protected async void ReadLoop()
         {
@@ -266,6 +280,7 @@ namespace TS3QueryLib.Net.Core
             Socket = null;
             Connected = false;
             ReadLoopTask = null;
+            KeepAliveTask = null;
             ConnectionClosed?.Invoke(this, new EventArgs<string>(reason));
         }
         
