@@ -139,8 +139,6 @@ namespace TS3QueryLib.Net.Core
 
                 await socket.ConnectAsync(endPoint).ConfigureAwait(false);
                 byte[] transferKeyBytes = Encoding.UTF8.GetBytes(fileTransferKey);
-                
-                // TODO: Make it work: the server currently closes the connection here and I dont know why :-s
                 int sentTransferKeyBytes = await SendAsync(socket, transferKeyBytes).ConfigureAwait(false);
 
                 if (sentTransferKeyBytes != transferKeyBytes.Length)

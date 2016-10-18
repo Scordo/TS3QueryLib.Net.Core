@@ -11,7 +11,7 @@ All queries are implemented type-safe in .Net Core.
 
 **File tranfer functionality** (&#x2714; implemented - &#x2716; not implemented yet):
 * &#x2714; Download
-* &#x2716; Upload
+* &#x2714; Upload
 
 **List of Notifications** (&#x2714; implemented - &#x2716; not implemented yet):
 * &#x2714; notifyclientleftview
