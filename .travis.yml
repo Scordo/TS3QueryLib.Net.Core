@@ -11,4 +11,4 @@ branches:
     
 script:
   - dotnet restore
-  - dotnet --verbose build -c Release **/project.json
+  - dotnet build -c Release -v normal TS3QueryLib.Net.Core/TS3QueryLib.Net.Core.csproj
