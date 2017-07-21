@@ -4,7 +4,6 @@
     <Description>TeamSpeak 3 Query Port Library for .Net Core</Description>
     <Copyright>Copyright © Jens Hofmann 2016</Copyright>
     <AssemblyTitle>TS3QueryLib.Net.Core</AssemblyTitle>
-    <VersionPrefix>0.2.1-alpha</VersionPrefix>
     <Authors>Jens Hofmann</Authors>
     <TargetFrameworks>netstandard1.4;netstandard1.6</TargetFrameworks>
     <AssemblyName>TS3QueryLib.Net.Core</AssemblyName>
@@ -24,14 +23,11 @@
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <Version>0.3.0-alpha</Version>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.4|AnyCPU'">
     <DefineConstants>TRACE;DEBUG;NETSTANDARD1_4</DefineConstants>
   </PropertyGroup>
-
-  <Target Name="PostcompileScript" AfterTargets="Build" Condition=" '$(IsCrossTargetingBuild)' != 'true' ">
-    <Exec Command="dotnet pack --no-build --configuration $(Configuration)" />
-  </Target>
-
 </Project>
