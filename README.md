@@ -168,7 +168,35 @@ All queries are implemented type-safe in .Net Core.
 * &#x2716; Upload
 
 **List of Notifications** (&#x2714; implemented - &#x2716; not implemented yet):
-* TODO
+* &#x2716; notifytalkstatuschange
+* &#x2716; notifymessage
+* &#x2716; notifymessagelist
+* &#x2716; notifycomplainlist
+* &#x2716; notifybanlist
+* &#x2716; notifyclientmoved
+* &#x2716; notifyclientleftview
+* &#x2716; notifycliententerview
+* &#x2716; notifyclientpoke
+* &#x2716; notifyclientchatclosed
+* &#x2716; notifyclientchatcomposing
+* &#x2716; notifyclientupdated
+* &#x2716; notifyclientids
+* &#x2716; notifyclientdbidfromuid
+* &#x2716; notifyclientnamefromuid
+* &#x2716; notifyclientnamefromdbid
+* &#x2716; notifyclientuidfromclid
+* &#x2716; notifyconnectioninfo
+* &#x2716; notifychannelcreated
+* &#x2716; notifychanneledited
+* &#x2716; notifychanneldeleted
+* &#x2716; notifychannelmoved
+* &#x2716; notifyserveredited
+* &#x2716; notifyserverupdated
+* &#x2716; channellist
+* &#x2716; channellistfinished
+* &#x2716; notifytextmessage
+* &#x2716; notifycurrentserverconnectionchanged
+* &#x2716; notifyconnectstatuschange
 
 **List of Commands** (&#x2714; implemented - &#x2716; not implemented yet):
 * &#x2714; help
