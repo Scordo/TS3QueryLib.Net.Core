@@ -45,36 +45,41 @@ namespace TS3QueryLib.Net.Core.Common.Responses
 
         public virtual void ApplyResponseText(string responseText)
         {
-            if (responseText == null)
-                throw new ArgumentNullException(nameof(responseText));
-
-
-            ResponseText = responseText;
-            responseText = responseText.Trim();
-            int index = responseText.LastIndexOf(Util.QUERY_LINE_BREAK, StringComparison.Ordinal);
-            BodyText = index == -1 ? null : responseText.Substring(0, index).Trim();
-            StatusText = index == -1 ? responseText : responseText.Substring(index + 2).Trim();
-
-            StatusCommandParameterGroupList = CommandParameterGroupListParser.Parse(StatusText);
-
-            try
+            if (responseText != null)
             {
-                BodyCommandParameterGroupList = CommandParameterGroupListParser.Parse(BodyText);
+
+                ResponseText = responseText;
+                responseText = responseText.Trim();
+                int index = responseText.LastIndexOf(Util.QUERY_LINE_BREAK, StringComparison.Ordinal);
+                BodyText = index == -1 ? null : responseText.Substring(0, index).Trim();
+                StatusText = index == -1 ? responseText : responseText.Substring(index + 2).Trim();
+
+                StatusCommandParameterGroupList = CommandParameterGroupListParser.Parse(StatusText);
+
+                try
+                {
+                    BodyCommandParameterGroupList = CommandParameterGroupListParser.Parse(BodyText);
+                }
+                catch
+                {
+                    BodyCommandParameterGroupList = new CommandParameterGroupList();
+                }
+
+
+                if (StatusCommandParameterGroupList.Count == 0)
+                    return;
+
+                ErrorId = StatusCommandParameterGroupList.GetParameterValue<uint>("id");
+                ErrorMessage = StatusCommandParameterGroupList.GetParameterValue("msg");
+                BanExtraMessage = StatusCommandParameterGroupList.GetParameterValue("extra_msg");
+                FailedPermissionId = StatusCommandParameterGroupList.GetParameterValue<uint?>("failed_permid");
+                IsBanned = ErrorId == 3329 || ErrorId == 3331;
             }
-            catch
+            else
             {
+                StatusCommandParameterGroupList = new CommandParameterGroupList();
                 BodyCommandParameterGroupList = new CommandParameterGroupList();
             }
-            
-
-            if (StatusCommandParameterGroupList.Count == 0)
-                return;
-
-            ErrorId = StatusCommandParameterGroupList.GetParameterValue<uint>("id");
-            ErrorMessage = StatusCommandParameterGroupList.GetParameterValue("msg");
-            BanExtraMessage = StatusCommandParameterGroupList.GetParameterValue("extra_msg");
-            FailedPermissionId = StatusCommandParameterGroupList.GetParameterValue<uint?>("failed_permid");
-            IsBanned = ErrorId == 3329 || ErrorId == 3331;
 
             if (!OnlyPostApplyResponseOnSuccess || !IsErroneous)
                 OnPostApplyResponse();
