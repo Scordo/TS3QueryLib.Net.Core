@@ -3,7 +3,7 @@ dist: trusty
 language: csharp
 solution: TS3QueryLib.Net.Core.sln
 mono: none
-dotnet: 1.0.0-preview2-003121
+dotnet: 1.0.4
 
 branches:  
   only:
