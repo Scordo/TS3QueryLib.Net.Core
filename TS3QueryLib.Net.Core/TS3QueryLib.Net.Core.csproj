@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>TeamSpeak 3 Query Port Library for .Net Core</Description>
+    <Copyright>Copyright © Jens Hofmann 2016</Copyright>
+    <AssemblyTitle>TS3QueryLib.Net.Core</AssemblyTitle>
+    <VersionPrefix>0.2.1-alpha</VersionPrefix>
+    <Authors>Jens Hofmann</Authors>
+    <TargetFrameworks>netstandard1.4;netstandard1.6</TargetFrameworks>
+    <AssemblyName>TS3QueryLib.Net.Core</AssemblyName>
+    <PackageId>TS3QueryLib.Net.Core</PackageId>
+    <PackageTags>TeamSpeak;Query;C#;CSharp</PackageTags>
+    <PackageReleaseNotes>Early alpha of a .net core version of TS3QueryLib.Net</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/Scordo/TS3QueryLib.Net.Core</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/Scordo/TS3QueryLib.Net.Core/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/Scordo/TS3QueryLib.Net.Core</RepositoryUrl>
+    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
+    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.4' ">$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+  </PropertyGroup>
+
+  <Target Name="PostcompileScript" AfterTargets="Build" Condition=" '$(IsCrossTargetingBuild)' != 'true' ">
+    <Exec Command="dotnet pack --no-build --configuration $(Configuration)" />
+  </Target>
+
+</Project>

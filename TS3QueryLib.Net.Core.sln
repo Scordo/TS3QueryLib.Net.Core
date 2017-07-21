@@ -1,16 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TS3QueryLib.Net.Core", "TS3QueryLib.Net.Core\TS3QueryLib.Net.Core.xproj", "{D0B8767E-A206-4557-B3FD-F3D863E26379}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TS3QueryLib.Net.Core.TestApp", "TS3QueryLib.Net.Core.TestApp\TS3QueryLib.Net.Core.TestApp.xproj", "{E14AF97E-D377-48F4-B825-7940D3370010}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B84890D4-D88C-463B-B1A1-45D193D5D361}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TS3QueryLib.Net.Core", "TS3QueryLib.Net.Core\TS3QueryLib.Net.Core.csproj", "{D0B8767E-A206-4557-B3FD-F3D863E26379}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TS3QueryLib.Net.Core.TestApp", "TS3QueryLib.Net.Core.TestApp\TS3QueryLib.Net.Core.TestApp.csproj", "{E14AF97E-D377-48F4-B825-7940D3370010}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
