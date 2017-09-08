@@ -42,6 +42,7 @@ namespace TS3QueryLib.Net.Core.Server.Notification
             AddHandler("notifychanneldescriptionchanged", ChannelDescriptionChanged);
             AddHandler("notifychannelpasswordchanged", ChannelPasswordChanged);
             AddHandler("notifyserveredited", ServerEdited);
+            AddHandler("notifytokenused", TokenUsed);
             AddHandler("*", UnknownNotificationReceived);
         }
 
