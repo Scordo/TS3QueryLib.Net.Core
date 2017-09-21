@@ -33,6 +33,11 @@ namespace TS3QueryLib.Net.Core.Common.Commands
 
         #region Public Methods
 
+        public void AddRaw(string rawText)
+        {
+            ParameterGroups.AddRaw(rawText);
+        }
+
         public void AddParameter(string parameterName)
         {
             ParameterGroups.AddParameter(parameterName, null, 0);

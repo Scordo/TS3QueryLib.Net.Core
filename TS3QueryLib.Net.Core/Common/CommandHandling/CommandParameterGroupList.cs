@@ -29,6 +29,11 @@ namespace TS3QueryLib.Net.Core.Common.CommandHandling
 
         #region Public Methods
 
+        public void AddRaw(string rawText)
+        {
+            AddParameter(rawText, null, 0, false);
+        }
+
         public void AddParameter(string name)
         {
             AddParameter(name, null);
@@ -39,7 +44,7 @@ namespace TS3QueryLib.Net.Core.Common.CommandHandling
             AddParameter(name, value, null);
         }
 
-        public void AddParameter(string name, string value, uint? groupIndex)
+        public void AddParameter(string name, string value, uint? groupIndex, bool encodeNameWhenValueIsNull = true)
         {
             groupIndex = groupIndex ?? 0;
 
@@ -47,9 +52,9 @@ namespace TS3QueryLib.Net.Core.Common.CommandHandling
                 throw new ArgumentOutOfRangeException($"Can not add parameter '{name}' with value '{value}' to group with index '{groupIndex}', because the index is '{Count - groupIndex}' too big.");
 
             if (groupIndex == Count)
-                Add(new CommandParameterGroup { new CommandParameter(name, value) });
+                Add(new CommandParameterGroup { new CommandParameter(name, value, encodeNameWhenValueIsNull) });
             else
-                this[(int)groupIndex].Add(new CommandParameter(name, value));
+                this[(int)groupIndex].Add(new CommandParameter(name, value, encodeNameWhenValueIsNull));
         }
 
         public CommandParameter GetParameter(string name)

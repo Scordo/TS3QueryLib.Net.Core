@@ -10,7 +10,7 @@ namespace TS3QueryLib.Net.Core.Server.Commands
             if (snapshotData.IsNullOrTrimmedEmpty())
                 throw new ArgumentException("snapshotData is null or trimmed empty", nameof(snapshotData));
             
-            AddParameter(snapshotData);
+            AddRaw(snapshotData);
         }
     }
 }

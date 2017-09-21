@@ -5,6 +5,7 @@
         string Name { get; }
 
         void AddOption(string optionName);
+        void AddRaw(string rawText);
         void AddParameter(string parameterName);
         void AddParameter(string parameterName, int parameterValue);
         void AddParameter(string parameterName, string parameterValue);
