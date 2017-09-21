@@ -117,7 +117,7 @@ namespace TS3QueryLib.Net.Core.TestApp
 
         private static void ChannelDeleted_Triggered(object sender, Server.Notification.EventArgs.ChannelDeletedEventArgs e)
         {
-            Console.WriteLine($"Channel Delete: Channel with Id {e.ChannelId} was deleted by {e.InvokerName}.");
+            Console.WriteLine($"Channel Delete: Channel with Id {e.ChannelId} was deleted by {e.InvokerName}. Deleted Sub-Channel-Ids: {string.Join(",", e.SubChannelIdList)}");
         }
 
         private static void ChannelMoved_Triggered(object sender, Server.Notification.EventArgs.ChannelMovedEventArgs e)
