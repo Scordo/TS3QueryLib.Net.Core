@@ -1,5 +1,7 @@
-﻿using System.Net;
+﻿using System;
 using System.Threading.Tasks;
+using TS3QueryLib.Net.Core.Common;
+using TS3QueryLib.Net.Core.Common.Responses;
 
 namespace TS3QueryLib.Net.Core
 {
@@ -8,12 +10,21 @@ namespace TS3QueryLib.Net.Core
         bool Connected { get; }
         string Host { get; }
         int Port { get; }
-        EndPoint RemoteEndPoint { get; }
 
         QueryClient.ConnectResponse Connect();
         Task<QueryClient.ConnectResponse> ConnectAsync();
         void Disconnect();
         string Send(string messageToSend);
         Task<string> SendAsync(string messageToSend);
+
+        /// <summary>
+        /// Raised when a ban was detected
+        /// </summary>
+        event EventHandler<EventArgs<ICommandResponse>> BanDetected;
+        
+        /// <summary>
+        /// Raised when the connection to the server was closed
+        /// </summary>
+        event EventHandler<EventArgs<string>> ConnectionClosed;
     }
 }
