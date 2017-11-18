@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using TS3QueryLib.Net.Core.Common;
 using TS3QueryLib.Net.Core.Common.Commands;
@@ -48,6 +49,7 @@ namespace TS3QueryLib.Net.Core
         private StreamReader ClientReader { get; set; }
         private StreamWriter ClientWriter { get; set; }
         private NetworkStream ClientStream { get; set; }
+        private SemaphoreSlim SendLock { get; } = new SemaphoreSlim(1,1);
 
         /// <summary>
         /// Gets or sets an optional predicate action which is executed before a command is sent. If the predicate action returns <value>true</value>, the command is sent, otherwise not.
@@ -131,20 +133,29 @@ namespace TS3QueryLib.Net.Core
 
         public async Task<string> SendAsync(string messageToSend)
         {
-            await SendAsync(ClientWriter, messageToSend);
+            await SendLock.WaitAsync();
 
-            do
+            try
             {
-                if (MessageResponses.TryDequeue(out var result))
-                    return result;
+                await SendAsync(ClientWriter, messageToSend);
 
-                await Task.Delay(TimeSpan.FromMilliseconds(10)).ConfigureAwait(false);
-            } while (Connected);
+                do
+                {
+                    if (MessageResponses.TryDequeue(out var result))
+                        return result;
 
-            return null;
+                    await Task.Delay(TimeSpan.FromMilliseconds(10)).ConfigureAwait(false);
+                } while (Connected);
+
+                return null;
+            }
+            finally
+            {
+                SendLock.Release();
+            }
         }
 
-        protected static async Task SendAsync(StreamWriter writer, string messageToSend)
+        private static async Task SendAsync(StreamWriter writer, string messageToSend)
         {
             ConfiguredTaskAwaitable? writeLineAwaitable = writer?.WriteLineAsync(messageToSend).ConfigureAwait(false);
 
@@ -170,7 +181,7 @@ namespace TS3QueryLib.Net.Core
             while (Client != null && KeepAliveInterval.HasValue)
             {
                 await Task.Delay(KeepAliveInterval.Value);
-                await SendAsync(ClientWriter, "\n");
+                await SendAsync("\n");
             }
         }
 
