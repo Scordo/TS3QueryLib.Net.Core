@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using TS3QueryLib.Net.Core.Common.Exceptions;
 using TS3QueryLib.Net.Core.Common.Responses;
 
 namespace TS3QueryLib.Net.Core.Common.Commands
@@ -25,8 +27,16 @@ namespace TS3QueryLib.Net.Core.Common.Commands
             TResponse response = CreateResponse();
 
             BeforApplyResponseText(response, responseText);
-            response.ApplyResponseText(responseText);
 
+            try
+            {
+                response.ApplyResponseText(responseText);
+            }
+            catch (Exception e)
+            {
+                throw new ParseException($"Error while trying to parse the response.\n\nRaw-Response:" + response, e);
+            }
+            
             return response;
         }
 
