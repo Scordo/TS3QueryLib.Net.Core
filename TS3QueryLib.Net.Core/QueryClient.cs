@@ -11,6 +11,7 @@ using TS3QueryLib.Net.Core.Common;
 using TS3QueryLib.Net.Core.Common.Commands;
 using TS3QueryLib.Net.Core.Common.Notification;
 using TS3QueryLib.Net.Core.Common.Responses;
+using TS3QueryLib.Net.Core.Server.Commands;
 
 namespace TS3QueryLib.Net.Core
 {
@@ -181,7 +182,7 @@ namespace TS3QueryLib.Net.Core
             while (Client != null && KeepAliveInterval.HasValue)
             {
                 await Task.Delay(KeepAliveInterval.Value);
-                await SendAsync("\n");
+                await SendAsync("version");
             }
         }
 
