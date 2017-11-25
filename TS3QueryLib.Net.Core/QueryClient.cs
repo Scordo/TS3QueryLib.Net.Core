@@ -1,29 +1,23 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Net;
+using System.IO;
+using System.Linq;
 using System.Net.Sockets;
-using System.Text;
-using System.Text.RegularExpressions;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using TS3QueryLib.Net.Core.Common;
 using TS3QueryLib.Net.Core.Common.Commands;
 using TS3QueryLib.Net.Core.Common.Notification;
 using TS3QueryLib.Net.Core.Common.Responses;
+using TS3QueryLib.Net.Core.Server.Commands;
 
 namespace TS3QueryLib.Net.Core
 {
     public class QueryClient : IQueryClient
     {
-        #region Constants
-
-        protected const string CLIENT_GREETING_FIRST_LINE = "TS3 Client" + Util.QUERY_LINE_BREAK;
-        protected const string SERVER_GREETING_FIRST_LINE = "TS3" + Util.QUERY_LINE_BREAK;
-
-        #endregion
-
         #region Events
-
 
         /// <summary>
         /// Raised when a ban was detected
@@ -42,14 +36,22 @@ namespace TS3QueryLib.Net.Core
         public string Host { get; }
         public int Port { get; }
         protected INotificationHub NotificationHub { get; }
-        protected TimeSpan? KeepAliveInterval { get; private set; }
-        protected Socket Socket { get; private set; }
-        public EndPoint RemoteEndPoint { get; private set; }
+        protected TimeSpan? KeepAliveInterval { get; }
         public bool Connected { get; protected set; }
-        private StringBuilder ReceivedMessagesBuffer { get; } = new StringBuilder();
+        public int? LastServerConnectionHandlerId { get; private set; }
+
+        private List<string> ReceivedLines { get; } = new List<string>();
+        private bool AtLeastOneResponseReceived { get; set; }
         private ConcurrentQueue<string> MessageResponses { get; } = new ConcurrentQueue<string>();
         private Task ReadLoopTask { get; set; }
         private Task KeepAliveTask { get; set; }
+
+        private TcpClient Client { get; set; }
+        private StreamReader ClientReader { get; set; }
+        private StreamWriter ClientWriter { get; set; }
+        private NetworkStream ClientStream { get; set; }
+        private SemaphoreSlim SendLock { get; } = new SemaphoreSlim(1,1);
+
         /// <summary>
         /// Gets or sets an optional predicate action which is executed before a command is sent. If the predicate action returns <value>true</value>, the command is sent, otherwise not.
         /// </summary>
@@ -85,24 +87,30 @@ namespace TS3QueryLib.Net.Core
 
         public async Task<ConnectResponse> ConnectAsync()
         {
-            if (Socket != null)
-                return new ConnectResponse(message:"Already connected!");
+            if (Client != null)
+                return new ConnectResponse(message: "Already connected!");
 
-            Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp) { ReceiveBufferSize = 4096 };
+            Client = new TcpClient();
+            await Client.ConnectAsync(Host, Port).ConfigureAwait(false);
 
-            IPAddress ipV4;
-            RemoteEndPoint = IPAddress.TryParse(Host, out ipV4) ? new IPEndPoint(ipV4, Port) : (EndPoint)new DnsEndPoint(Host, Port);
+            if (!Client.Connected)
+                throw new IOException($"Could not connect to {Host} on port {Port}.");
 
-            await Socket.ConnectAsync(RemoteEndPoint).ConfigureAwait(false);
-            string message = await ReadMessageAsync().ConfigureAwait(false);
+            ReceivedLines.Clear();
+            AtLeastOneResponseReceived = false;
+            ClientStream = Client.GetStream();
+            ClientReader = new StreamReader(ClientStream);
+            ClientWriter = new StreamWriter(ClientStream) { NewLine = "\n" };
+
+            string message = await ReadLineAsync().ConfigureAwait(false);
 
             QueryType queryType;
 
-            if (message.StartsWith(SERVER_GREETING_FIRST_LINE, StringComparison.OrdinalIgnoreCase))
+            if (message.StartsWith("TS3", StringComparison.OrdinalIgnoreCase))
             {
                 queryType = QueryType.Server;
             }
-            else if (message.StartsWith(CLIENT_GREETING_FIRST_LINE, StringComparison.OrdinalIgnoreCase))
+            else if (message.StartsWith("TS3 Client", StringComparison.OrdinalIgnoreCase))
             {
                 queryType = QueryType.Client;
             }
@@ -112,7 +120,7 @@ namespace TS3QueryLib.Net.Core
                 DisconnectForced(statusMessage);
                 return new ConnectResponse(statusMessage);
             }
-            
+
             Connected = true;
             ReadLoopTask = Task.Factory.StartNew(ReadLoop, TaskCreationOptions.LongRunning);
             KeepAliveTask = Task.Factory.StartNew(KeepAliveLoop, TaskCreationOptions.LongRunning);
@@ -126,18 +134,38 @@ namespace TS3QueryLib.Net.Core
 
         public async Task<string> SendAsync(string messageToSend)
         {
-            await SendAsync(Socket, messageToSend + "\n").ConfigureAwait(false);
+            await SendLock.WaitAsync();
 
-            do
+            try
             {
-                string result;
-                if (MessageResponses.TryDequeue(out result))
-                    return result;
+                await SendAsync(ClientWriter, messageToSend);
 
-                await Task.Delay(TimeSpan.FromMilliseconds(10)).ConfigureAwait(false);
-            } while (Connected);
+                do
+                {
+                    if (MessageResponses.TryDequeue(out var result))
+                        return result;
 
-            return null;
+                    await Task.Delay(TimeSpan.FromMilliseconds(10)).ConfigureAwait(false);
+                } while (Connected);
+
+                return null;
+            }
+            finally
+            {
+                SendLock.Release();
+            }
+        }
+
+        private static async Task SendAsync(StreamWriter writer, string messageToSend)
+        {
+            ConfiguredTaskAwaitable? writeLineAwaitable = writer?.WriteLineAsync(messageToSend).ConfigureAwait(false);
+
+            if (writeLineAwaitable.HasValue)
+                await writeLineAwaitable.Value;
+
+            ConfiguredTaskAwaitable? flushAwaitable = writer?.FlushAsync().ConfigureAwait(false);
+            if (flushAwaitable.HasValue)
+                await flushAwaitable.Value;
         }
 
         public void Disconnect()
@@ -151,139 +179,105 @@ namespace TS3QueryLib.Net.Core
 
         protected async void KeepAliveLoop()
         {
-            while (Socket != null && KeepAliveInterval.HasValue)
+            while (Client != null && KeepAliveInterval.HasValue)
             {
                 await Task.Delay(KeepAliveInterval.Value);
-                await SendAsync(Socket, "\n");
+                await SendAsync("version");
             }
         }
 
         protected async void ReadLoop()
         {
-            while (Socket != null)
+            while (Client != null && Client.Connected)
             {
-                string message = await ReadMessageAsync(false).ConfigureAwait(false);
+                string message = await ReadLineAsync(false).ConfigureAwait(false);
 
                 if (message == null)
+                    continue;
+
+                if (message.StartsWith("error", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    DisconnectForced("Empty message received from server.");
-                    return;
+                    if (!AtLeastOneResponseReceived)
+                    {
+                        AtLeastOneResponseReceived = true;
+                        // Remove welcome messages after connect
+                        ReceivedLines.Clear();
+                    }
+
+                    string responseText = string.Join(Util.QUERY_LINE_BREAK, ReceivedLines.Concat(new[] { message }));
+                    MessageResponses.Enqueue(responseText);
+                    ReceivedLines.Clear();
+
+                    CommandResponse commandResponse = new CommandResponse();
+                    commandResponse.ApplyResponseText(responseText);
+
+                    if (commandResponse.IsBanned)
+                    {
+                        BanDetected?.Invoke(this, new EventArgs<ICommandResponse>(commandResponse));
+                        DisconnectForced("Banned!");
+                        return;
+                    }
                 }
-
-                ReceivedMessagesBuffer.Append(message);
-
-                while (true)
+                else if (message.StartsWith("notify", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    Match notifyMatch = GetNotifyResponseMatch(ReceivedMessagesBuffer.ToString());
+                    int indexOfFirstWhitespace = message.IndexOf(' ');
+                    string notificationName = message.Substring(0, indexOfFirstWhitespace);
 
-                    if (notifyMatch.Success)
+                    NotificationHub?.HandleRawNotification(this, notificationName, message);
+                }
+                else
+                {
+                    if (!AtLeastOneResponseReceived)
                     {
-                        NotificationHub?.HandleRawNotification(this, notifyMatch.Groups["eventname"].Value, notifyMatch.Value);
-                        ReceivedMessagesBuffer.Remove(0, notifyMatch.Length);
+                        const string LastServerConnectionHandlerIdText = "selected schandlerid=";
 
-                        if (ReceivedMessagesBuffer.Length == 0)
-                            break;
-
-                        continue;
+                        if (message.StartsWith(LastServerConnectionHandlerIdText, StringComparison.CurrentCultureIgnoreCase) && int.TryParse(message.Substring(LastServerConnectionHandlerIdText.Length).Trim(), out int handlerId))
+                            LastServerConnectionHandlerId = handlerId;
                     }
 
-                    Match statusLineMatch = GetStatusLineMatch(ReceivedMessagesBuffer.ToString());
-
-                    if (statusLineMatch.Success)
-                    {
-                        string responseText = statusLineMatch.Value;
-
-                        // happens when there is a notification between the body and statusline of a command response --> I think this is a bug of ts3
-                        if (responseText.Contains("\n\rnotify"))
-                        {
-                            // extract the notification data and raise notification
-                            notifyMatch = GetNotifyResponseMatchBetweenCommandResponse(responseText);
-                            string eventName = notifyMatch.Groups["eventname"].Value;
-                            NotificationHub?.HandleRawNotification(this, eventName, eventName + notifyMatch.Groups["eventdata"].Value);
-
-                            // modify the response thext used for the command response
-                            responseText = notifyMatch.Groups["part1"].Value + notifyMatch.Groups["part2"].Value;
-                        }
-
-                        MessageResponses.Enqueue(responseText);
-                        ReceivedMessagesBuffer.Remove(0, statusLineMatch.Length);
-
-                        CommandResponse commandResponse = new CommandResponse();
-                        commandResponse.ApplyResponseText(responseText);
-
-                        if (commandResponse.IsBanned)
-                        {
-                            BanDetected?.Invoke(this, new EventArgs<ICommandResponse>(commandResponse));
-                            DisconnectForced("Banned!");
-                            return;
-                        }
-
-                        if (ReceivedMessagesBuffer.Length > 0)
-                            continue;
-                    }
-
-                    break;
+                    ReceivedLines.Add(message);
                 }
             }
         }
 
-        protected async Task<string> ReadMessageAsync(bool throwOnEmptyMessage = true)
+        protected async Task<string> ReadLineAsync(bool throwOnEmptyMessage = true)
         {
-            List<ArraySegment<byte>> buffer = new List<ArraySegment<byte>> { new ArraySegment<byte>(new byte[Socket.ReceiveBufferSize]) };
-            int receivedBytes = await Socket.ReceiveAsync(buffer, SocketFlags.None).ConfigureAwait(false);
+            ConfiguredTaskAwaitable<string>? readLineAwaitable = ClientReader?.ReadLineAsync().ConfigureAwait(false);
+            string message = readLineAwaitable.HasValue ? await readLineAwaitable.Value : null;
 
-            if (receivedBytes != 0)
-                return Encoding.UTF8.GetString(buffer[0].Array, 0, receivedBytes);
+            if (message != null)
+                return message;
 
             DisconnectForced("Empty message received from server.");
 
             if (throwOnEmptyMessage)
                 throw new InvalidOperationException("Received no message. Socket got disconnected.");
-            
+
             return null;
-        }
-
-        protected static async Task SendAsync(Socket socket, string messageToSend)
-        {
-            ArraySegment<byte> messageBytes = new ArraySegment<byte>(Encoding.UTF8.GetBytes(messageToSend));
-            int sendBytes = await socket.SendAsync(messageBytes, SocketFlags.None).ConfigureAwait(false);
-
-            if (sendBytes != messageBytes.Count)
-                throw new InvalidOperationException("Not all bytes were sent correctly!");
-        }
-
-        private static Match GetNotifyResponseMatch(string text)
-        {
-            const string PATTERN = @"^(?<eventname>notify[^\s]+)\s+.+?\x0A\x0D";
-
-            return text.StartsWith("notify", StringComparison.OrdinalIgnoreCase) ? Regex.Match(text, PATTERN, RegexOptions.Singleline) : Match.Empty;
-        }
-
-        private static Match GetNotifyResponseMatchBetweenCommandResponse(string text)
-        {
-            const string PATTERN = @"^(?<part1>.*?\x0A\x0D)(?<eventname>notify[^\s]+)(?<eventdata>\s+.+?)\x0A\x0D(?<part2>.*)$";
-
-            return Regex.Match(text, PATTERN, RegexOptions.Singleline);
-        }
-
-        protected static Match GetStatusLineMatch(string responseText)
-        {
-            const string PATTERN = "((^)|(.*?\\x0A\\x0D))error id=.+?\\x0A\\x0D";
-
-            return responseText.IndexOf("error id=", StringComparison.OrdinalIgnoreCase) != -1 ? Regex.Match(responseText, PATTERN, RegexOptions.Singleline) : Match.Empty;
         }
 
         private void DisconnectForced(string reason)
         {
-            Socket?.Shutdown(SocketShutdown.Both);
-            Socket?.Dispose();
-            Socket = null;
+            bool clientWasConnected = Client?.Connected == true;
+            ReceivedLines.Clear();
+            Client?.Dispose();
+            ClientStream?.Dispose();
+            ClientReader?.Dispose();
+            ClientWriter?.Dispose();
+
+            Client = null;
+            ClientStream = null;
+            ClientReader = null;
+            ClientWriter = null;
+
             Connected = false;
             ReadLoopTask = null;
             KeepAliveTask = null;
-            ConnectionClosed?.Invoke(this, new EventArgs<string>(reason));
+
+            if (clientWasConnected)
+                ConnectionClosed?.Invoke(this, new EventArgs<string>(reason));
         }
-        
+
 
         #endregion
 

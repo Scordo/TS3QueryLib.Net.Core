@@ -5,7 +5,7 @@
     <Copyright>Copyright © Jens Hofmann 2016</Copyright>
     <AssemblyTitle>TS3QueryLib.Net.Core</AssemblyTitle>
     <Authors>Jens Hofmann</Authors>
-    <TargetFrameworks>netstandard1.4;netstandard1.6</TargetFrameworks>
+    <TargetFrameworks>netstandard1.4;netstandard1.6;netstandard2.0</TargetFrameworks>
     <AssemblyName>TS3QueryLib.Net.Core</AssemblyName>
     <PackageId>TS3QueryLib.Net.Core</PackageId>
     <PackageTags>TeamSpeak;Query;C#;CSharp</PackageTags>
@@ -23,10 +23,10 @@
     <GenerateAssemblyCopyrightAttribute>true</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyVersionAttribute>true</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>true</GenerateAssemblyFileVersionAttribute>
-    <Version>0.4.0-alpha</Version>
+    <Version>0.5.0-alpha</Version>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <AssemblyVersion>0.4.0.0</AssemblyVersion>
-    <FileVersion>0.4.0.0</FileVersion>
+    <AssemblyVersion>0.5.0.0</AssemblyVersion>
+    <FileVersion>0.5.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.4|AnyCPU'">

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using TS3QueryLib.Net.Core.Common;
+using TS3QueryLib.Net.Core.Common.Responses;
 using TS3QueryLib.Net.Core.Server.Commands;
 using TS3QueryLib.Net.Core.Server.Entitities;
 using TS3QueryLib.Net.Core.Server.Notification;
@@ -36,7 +38,7 @@ namespace TS3QueryLib.Net.Core.TestApp
             notifications.UnknownNotificationReceived.Triggered += UnknownNotificationReceived_Triggered;
 
             // The client is configured to send a heartbeat every 30 seconds, the default is not to send a keep alive
-            QueryClient client = new QueryClient(notificationHub: notifications, keepAliveInterval: TimeSpan.FromSeconds(30));
+            IQueryClient client = new QueryClient(notificationHub: notifications, keepAliveInterval: TimeSpan.FromSeconds(30), host: "localhost");
             client.BanDetected += Client_BanDetected;
             client.ConnectionClosed += Client_ConnectionClosed;
             Connect(client);
@@ -45,7 +47,7 @@ namespace TS3QueryLib.Net.Core.TestApp
             Console.WriteLine("Admin login:" + !new LoginCommand("serveradmin", "RWkzzXu9").Execute(client).IsErroneous);
             Console.WriteLine("Switch to server with port 9987: " + !new UseCommand(9987).Execute(client).IsErroneous);
 
-            Console.WriteLine("Register notify [Server]: "+ !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.Server).Execute(client).IsErroneous);
+            Console.WriteLine("Register notify [Server]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.Server).Execute(client).IsErroneous);
             Console.WriteLine("Register notify [Channel]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.Channel, 0).Execute(client).IsErroneous); // 0 = all channels
             Console.WriteLine("Register notify [Channel-Text]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.TextChannel, 1).Execute(client).IsErroneous);
             Console.WriteLine("Register notify [Server-Text]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.TextServer).Execute(client).IsErroneous);
@@ -88,7 +90,7 @@ namespace TS3QueryLib.Net.Core.TestApp
             Console.ResetColor();
         }
 
-        private static void Client_BanDetected(object sender, EventArgs<Common.Responses.ICommandResponse> e)
+        private static void Client_BanDetected(object sender, EventArgs<ICommandResponse> e)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("!!! BAN DETECTED !!!");
@@ -195,7 +197,7 @@ namespace TS3QueryLib.Net.Core.TestApp
             Console.WriteLine($"Joined: {e.Nickname}");
         }
 
-        private static void Connect(QueryClient client)
+        private static void Connect(IQueryClient client)
         {
             QueryClient.ConnectResponse connectResponse = client.Connect();
 
