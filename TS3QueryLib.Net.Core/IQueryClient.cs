@@ -26,5 +26,7 @@ namespace TS3QueryLib.Net.Core
         /// Raised when the connection to the server was closed
         /// </summary>
         event EventHandler<EventArgs<string>> ConnectionClosed;
+
+        void SetCommunicationLog(ICommunicationLog log);
     }
 }

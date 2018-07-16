@@ -41,13 +41,17 @@ namespace TS3QueryLib.Net.Core.TestApp
             IQueryClient client = new QueryClient(notificationHub: notifications, keepAliveInterval: TimeSpan.FromSeconds(30), host: "localhost");
             client.BanDetected += Client_BanDetected;
             client.ConnectionClosed += Client_ConnectionClosed;
+
+            SimpleCommunicationLog communicationLog = new SimpleCommunicationLog();
+            client.SetCommunicationLog(communicationLog);
+
             Connect(client);
 
             // username and password are random and only valid on my dev box. So dont bother
             Console.WriteLine("Admin login:" + !new LoginCommand("serveradmin", "RWkzzXu9").Execute(client).IsErroneous);
             Console.WriteLine("Switch to server with port 9987: " + !new UseCommand(9987).Execute(client).IsErroneous);
 
-            Console.WriteLine("Register notify [Server]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.Server).Execute(client).IsErroneous);
+            Console.WriteLine("Register notify [Server]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.Server, 0).Execute(client).IsErroneous);
             Console.WriteLine("Register notify [Channel]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.Channel, 0).Execute(client).IsErroneous); // 0 = all channels
             Console.WriteLine("Register notify [Channel-Text]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.TextChannel, 1).Execute(client).IsErroneous);
             Console.WriteLine("Register notify [Server-Text]: " + !new ServerNotifyRegisterCommand(ServerNotifyRegisterEvent.TextServer).Execute(client).IsErroneous);
@@ -70,11 +74,22 @@ namespace TS3QueryLib.Net.Core.TestApp
                     break;
                 }
 
-                string response = client.Send(commandText);
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write("Response: ");
-                Console.ResetColor();
-                Console.WriteLine(response);
+                if (commandText.Equals("!log", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    Console.Write("Raw-Log:");
+                    communicationLog.ForEach(entry => Console.WriteLine($"[{entry.Time.ToLongTimeString()}] [{entry.Type}] {entry.Message}"));
+                    communicationLog.Clear();
+                    Console.WriteLine("Press [ENTER] to continue.");
+                    Console.ReadLine();
+                }
+                else
+                {
+                    string response = client.Send(commandText);
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write("Response: ");
+                    Console.ResetColor();
+                    Console.WriteLine(response);
+                }
             }
             while (client.Connected);
             

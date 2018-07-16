@@ -28,7 +28,7 @@ namespace TS3QueryLib.Net.Core
         /// Raised when the connection to the server was closed
         /// </summary>
         public event EventHandler<EventArgs<string>> ConnectionClosed;
-
+        
         #endregion
 
         #region Properties
@@ -51,6 +51,7 @@ namespace TS3QueryLib.Net.Core
         private StreamWriter ClientWriter { get; set; }
         private NetworkStream ClientStream { get; set; }
         private SemaphoreSlim SendLock { get; } = new SemaphoreSlim(1,1);
+        private ICommunicationLog CommunicationLog { get; set; } = new VoidCommunicationLog();
 
         /// <summary>
         /// Gets or sets an optional predicate action which is executed before a command is sent. If the predicate action returns <value>true</value>, the command is sent, otherwise not.
@@ -103,6 +104,7 @@ namespace TS3QueryLib.Net.Core
             ClientWriter = new StreamWriter(ClientStream) { NewLine = "\n" };
 
             string message = await ReadLineAsync().ConfigureAwait(false);
+            CommunicationLog.RawMessageReceived(message);
 
             QueryType queryType;
 
@@ -138,7 +140,9 @@ namespace TS3QueryLib.Net.Core
 
             try
             {
+                CommunicationLog.RawMessageSending(messageToSend);
                 await SendAsync(ClientWriter, messageToSend);
+                CommunicationLog.RawMessageSent(messageToSend);
 
                 do
                 {
@@ -154,6 +158,11 @@ namespace TS3QueryLib.Net.Core
             {
                 SendLock.Release();
             }
+        }
+
+        public void SetCommunicationLog(ICommunicationLog log)
+        {
+            CommunicationLog = log ?? new VoidCommunicationLog();
         }
 
         private static async Task SendAsync(StreamWriter writer, string messageToSend)
@@ -191,6 +200,7 @@ namespace TS3QueryLib.Net.Core
             while (Client != null && Client.Connected)
             {
                 string message = await ReadLineAsync(false).ConfigureAwait(false);
+                CommunicationLog.RawMessageReceived(message);
 
                 if (message == null)
                     continue;
