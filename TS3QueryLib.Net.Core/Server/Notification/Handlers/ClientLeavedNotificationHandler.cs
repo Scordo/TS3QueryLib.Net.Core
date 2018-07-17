@@ -16,7 +16,7 @@ namespace TS3QueryLib.Net.Core.Server.Notification.Handlers
         {
             CommandParameterGroupList parameterGroupList = CommandParameterGroupList.Parse(responseText);
 
-            int? reasonId = parameterGroupList.GetParameterValue<int?>("reasonid")??8;
+            int? reasonId = parameterGroupList.GetParameterValue<int?>("reasonid")??(int) ClientLeftReason.Disconnect;
             
             switch ((ClientLeftReason)reasonId.Value)
             {
