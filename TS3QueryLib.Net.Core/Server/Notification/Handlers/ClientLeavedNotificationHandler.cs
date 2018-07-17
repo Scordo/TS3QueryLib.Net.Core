@@ -16,10 +16,7 @@ namespace TS3QueryLib.Net.Core.Server.Notification.Handlers
         {
             CommandParameterGroupList parameterGroupList = CommandParameterGroupList.Parse(responseText);
 
-            int? reasonId = parameterGroupList.GetParameterValue<int?>("reasonid");
-
-            if (!reasonId.HasValue)
-                return;
+            int? reasonId = parameterGroupList.GetParameterValue<int?>("reasonid")??8;
             
             switch ((ClientLeftReason)reasonId.Value)
             {
