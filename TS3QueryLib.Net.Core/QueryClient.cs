@@ -204,7 +204,7 @@ namespace TS3QueryLib.Net.Core
                 string message = await ReadLineAsync(false).ConfigureAwait(false);
                 CommunicationLog.RawMessageReceived(message);
 
-                if (message == null)
+                if (message.IsNullOrTrimmedEmpty())
                     continue;
 
                 if (message.StartsWith("error", StringComparison.CurrentCultureIgnoreCase))
