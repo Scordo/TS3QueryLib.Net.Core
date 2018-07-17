@@ -52,6 +52,8 @@ namespace TS3QueryLib.Net.Core
         private NetworkStream ClientStream { get; set; }
         private SemaphoreSlim SendLock { get; } = new SemaphoreSlim(1,1);
         private ICommunicationLog CommunicationLog { get; set; } = new VoidCommunicationLog();
+        private string LastRawNotification { get; set; } = "";
+        private DateTime LastNotificationTime { get; set; } = new DateTime(2000, 1, 1);
 
         /// <summary>
         /// Gets or sets an optional predicate action which is executed before a command is sent. If the predicate action returns <value>true</value>, the command is sent, otherwise not.
@@ -230,6 +232,13 @@ namespace TS3QueryLib.Net.Core
                 }
                 else if (message.StartsWith("notify", StringComparison.CurrentCultureIgnoreCase))
                 {
+                    // If 2 or more notifications are equal in a 200ms range, consider just one of them.
+                    if (LastRawNotification == message && (DateTime.Now - LastNotificationTime).TotalMilliseconds < 200)
+                        continue;
+                        
+                    LastRawNotification = message;
+                    LastNotificationTime = DateTime.Now;
+
                     int indexOfFirstWhitespace = message.IndexOf(' ');
                     string notificationName = message.Substring(0, indexOfFirstWhitespace);
 
